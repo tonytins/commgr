@@ -1,6 +1,6 @@
 # Art Manager
 
-This is a art manager command line interface for storing request, commission, and YCH information. 
+A command line interface for storing request, commission, and YCH information.
 
 It's based on the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy) in that it provides back-end functions for front-ends to take advantage of. The benefit to this is that it's language- and platform-agnostic.
 
