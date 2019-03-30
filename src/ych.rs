@@ -12,7 +12,7 @@ pub struct YCH {
     pub order: String,
     /// Slot the customer won in the auction
     pub slot: String,
-    pub contact: String,
+    pub username: String,
     /// Payment information (paypal, crypto, ect)
     pub payment: String,
 }
@@ -20,7 +20,7 @@ pub struct YCH {
 impl YCH {
     pub fn print_json(ych: YCH) -> Result<()> {
         let ych = YCH { id: ych.id, customer: ych.customer,
-            order: ych.order, slot: ych.slot, contact: ych.contact,
+            order: ych.order, slot: ych.slot, username: ych.username,
             payment: ych.payment
         };
 

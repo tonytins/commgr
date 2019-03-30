@@ -41,7 +41,7 @@ fn main() {
             let ych_cust = ych.value_of("customer").unwrap();
             let ych_order = ych.value_of("order").unwrap();
             let ych_slot = ych.value_of("slot").unwrap();
-            let ych_contact = ych.value_of("contact").unwrap();
+            let ych_contact = ych.value_of("username").unwrap();
             let ych_payment = ych.value_of("payment").unwrap();
 
             if let Err(e) = YCH::print_json(YCH {
@@ -51,7 +51,7 @@ fn main() {
                 order: ych_order.to_owned(),
                 customer: ych_cust.to_owned(),
                 slot: ych_slot.to_owned(),
-                contact: ych_contact.to_owned(),
+                username: ych_contact.to_owned(),
                 payment: ych_payment.to_owned(),
             }) {
                 println!("Application error: {}", e);
