@@ -9,7 +9,7 @@ use uuid::Uuid;
 use ych::YCH;
 
 fn main() {
-    // Todo: Move to YAML in future
+    // Todo: Move to YAML config
     let matches = App::new("Codename: Purple Fen")
         .version("0.1")
         .about("Request, commission, and YCH manager command line interface.")
@@ -44,7 +44,7 @@ fn main() {
             let ych_contact = ych.value_of("username").unwrap();
             let ych_payment = ych.value_of("payment").unwrap();
 
-            if let Err(e) = YCH::print_json(YCH {
+            if let Err(e) = YCH::write_json(YCH {
                 id: Uuid::new_v4()
                     .to_hyphenated()
                     .to_string(),

@@ -5,31 +5,19 @@ A command line interface for storing art request, commission, and YCH informatio
 It's based on the [Unix philosophy](https://en.wikipedia.org/wiki/Unix_philosophy) in that it provides back-end functions for front-ends to take advantage of. The benefit to this is that it's language- and platform-agnostic.
 
 ## Usage
-Note: **all fields required**.
 
-### YCH
-
-```
--c, --cust <customer>
--o, --order <order>
--p, --pay <payment>
--s, --slot <slot>
--u, --username <username>
-```
-Example: ``artm ych -c "William Moore" -u "dashawn @ twitter" -o "Alone tonight" -s 1 -p kson7biigki@payment.com``
-
-There is no limitation on what the username and payment field has to be. As long they both provide a legit means of contact (e.g. email, FA, DA, ect..) and payment (paypal, crypto, bank, ect..), respectfully. 
+See the [usage](Usage.md) page for more information.
 
 ## To-do
 
 - [ ] Write to file
-    - [ ] YCH: ``[order]_[slot]_[customer].yart``
-- [ ] Submission Types
-    - [ ] YCH
+    - [x] YCH: ``[order] - [slot] - [customer].json``
+    - [ ] Commission: TBA
+    - [ ] Request: TBA
+- [ ] Basic Submission Info
+    - [x] YCH
     - [ ] Commission
     - [ ] Request
-    - [ ] Self
-- [ ] Status
 
 ## Supported systems
 
