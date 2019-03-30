@@ -1,0 +1,11 @@
+[package]
+name = "bluefen"
+version = "0.1.0"
+authors = ["Anthony Wilcox"]
+edition = "2018"
+
+[dependencies]
+uuid = { version = "0.7", features = ["serde", "v4"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+clap = "2.32"
