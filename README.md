@@ -1,12 +1,39 @@
-# BlueFen
+# Art Manager
 
-This is a request, commission, and YCH manager command line interface. It's meant to act as a back-end for creating graphical front-ends but can be used as is. At the moment, they are saved in JSON-formatted files but it will eventually be replaced with database.
+This is a art manager command line interface for storing request, commission, and YCH information. 
+
+It's based on the [Unix philosophy](unix way) in that it provides back-end functions for front-ends to take advantage of. The benefit to this is that it's language- and platform-agnostic.
+
+## Usage
+Note: **all fields required**.
+
+### YCH
+
+```
+-n, --notify <contact>
+-c, --cust <customer>
+-o, --order <order>
+-p, --pay <payment>
+-s, --slot <slot>
+```
+Example:
+``artm ych -c William Moore -n dashawn -o Alone in the dark -s 1 -p kson7biigki@example.com``
 
 ## To-do
 
+- [ ] Write to file (``[order]_[slot]_[customer].artm``)
 - [ ] Submission Types
     - [ ] YCH
     - [ ] Commission
     - [ ] Request
     - [ ] Self
-- [ ] Database
+
+## Supported systems
+
+- Linux 2.16.8+
+- macOS 10.7+
+- Windows 7+
+    - Windows 10 October 2018 Update recommended
+    
+    
+[unix way]: https://en.wikipedia.org/wiki/Unix_philosophy

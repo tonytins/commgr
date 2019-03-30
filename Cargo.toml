@@ -1,5 +1,5 @@
 [package]
-name = "bluefen"
+name = "artm"
 version = "0.1.0"
 authors = ["Anthony Wilcox"]
 edition = "2018"
