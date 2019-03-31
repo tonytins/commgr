@@ -1,16 +1,16 @@
 // Copyright (c) Anthony Wilcox and contributors. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project
+// Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
-pub mod ych;
+pub mod ast;
 
 use clap::{App, SubCommand, Arg};
 use std::process;
 use uuid::Uuid;
-use ych::YCH;
+use ast::{YCH, Commission};
 
 fn main() {
     // Todo: Move to YAML config
-    let matches = App::new("Codename: Purple Fen")
+    let matches = App::new("Art Manager")
         .version("0.1")
         .about("Request, commission, and YCH manager command line interface.")
         .subcommand(SubCommand::with_name("ych")
@@ -57,6 +57,9 @@ fn main() {
                 println!("Application error: {}", e);
                 process::exit(1);
             }
+        },
+        ("comm", Some(comm)) => {
+
         },
         _ => unreachable!(),
     }
