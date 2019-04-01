@@ -2,6 +2,12 @@
 
 A command line interface for storing art request, commission, and YCH information. The application is a work in progress but contribution is welcomed.
 
+## Status
+
+| Service | Status |
+| :---: | :---: |
+| Travis CI | [![Build Status](https://travis-ci.com/antonwilc0x/artmanager.svg?branch=master)](https://travis-ci.com/antonwilc0x/artmanager) |
+
 ## Usage
 
 See the [usage](Usage.md) page for more information.
@@ -9,12 +15,12 @@ See the [usage](Usage.md) page for more information.
 ## To-do
 
 - [ ] Write to file
-    - [x] YCH: ``[order] - [slot] - [customer].amy``
-    - [x] Commission: ``[order] - [customer].amc``
+    - [x] YCH: ``[order] - [slot] - [buyer].amy``
+    - [x] Commission: ``[order] - [buyer].amc``
     - [ ] Request: TBA
 - [ ] Basic Submission Info
     - [x] YCH
-    - [ ] Commission
+    - [x] Commission
     - [ ] Request
 
 ## Supported systems
