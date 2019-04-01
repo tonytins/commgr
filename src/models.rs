@@ -54,7 +54,7 @@ pub struct Request {
 
 
 impl YCH {
-    pub fn write_json(ych: YCH) -> Result<()> {
+    pub fn write_ych(ych: YCH) -> Result<()> {
         let new_ych = YCH { id: ych.id, date: ych.date, buyer: ych.buyer,
             order: ych.order, slot: ych.slot, username: ych.username,
             payment: ych.payment, cost: ych.cost
@@ -77,14 +77,28 @@ impl YCH {
 
         Ok(())
     }
+
+    pub fn print_ych(ych: YCH) -> Result<()> {
+
+        let new_ych = YCH { id: ych.id, date: ych.date, buyer: ych.buyer,
+            order: ych.order, slot: ych.slot, username: ych.username,
+            payment: ych.payment, cost: ych.cost
+        };
+
+        let json_string = serde_json::to_string_pretty(&new_ych)?;
+
+        println!("{}", json_string);
+
+        Ok(())
+    }
 }
 
 impl Commission {
-    pub fn write_json(comm: Commission) -> Result<()> {
+    pub fn write_comm(comm: Commission) -> Result<()> {
         let new_comm = Commission {
             id: comm.id, date: comm.date, buyer: comm.buyer,
-            order: comm.order, username: comm.username, payment: comm.payment,
-            cost: comm.cost
+            order: comm.order, username: comm.username,
+            payment: comm.payment, cost: comm.cost
         };
 
         let json_string = serde_json::to_string_pretty(&new_comm);
@@ -99,6 +113,22 @@ impl Commission {
         if let Err(err) = writeln!(file, "{}", format!("{}", json_string?)) {
             eprintln!("Couldn't write to file. {}", err);
         }
+
+        Ok(())
+    }
+
+
+    pub fn print_comm(comm: Commission) -> Result<()> {
+
+        let new_comm = Commission {
+            id: comm.id, date: comm.date, buyer: comm.buyer,
+            order: comm.order, username: comm.username,
+            payment: comm.payment, cost: comm.cost
+        };
+
+        let json_string = serde_json::to_string_pretty(&new_comm)?;
+
+        println!("{}", json_string);
 
         Ok(())
     }
