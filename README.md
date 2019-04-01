@@ -26,7 +26,7 @@ See the [usage](Usage.md) page for more information.
     - [x] Commission
     - [ ] Request
 
-## Supported systems
+## Supported platforms
 
 - Linux 2.16.8+
 - macOS 10.7+
