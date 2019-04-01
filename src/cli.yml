@@ -1,5 +1,7 @@
 name: Art Manager
 args:
+  - debug:
+      long: debug
   - ych:
       long: ych
   - commission:
