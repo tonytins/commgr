@@ -4,9 +4,12 @@ A command line interface for storing art request, commission, and YCH informatio
 
 ## Status
 
-| Service | Status |
+| Branch | Status |
 | :---: | :---: |
-| Travis CI | [![Build Status](https://travis-ci.com/antonwilc0x/artmanager.svg?branch=master)](https://travis-ci.com/antonwilc0x/artmanager) |
+| Master | [![Build Status](https://travis-ci.com/antonwilc0x/artmanager.svg?branch=master)](https://travis-ci.com/antonwilc0x/artmanager) |
+| Beta | TBA |
+| Stable | TBA |
+
 
 ## Usage
 
