@@ -9,14 +9,15 @@ There is no limitation on what the username and payment field has to be. As long
 ### YCH
 
 ```
--c, --cust <customer>
+-n, --name <name>
 -o, --order <order>
 -p, --pay <payment>
+-c  --cost <cost>
 -s, --slot <slot>
 -u, --username <username>
 ```
 
-Example: ``artm ych -b "Bessie Hettinger" -u "Jack.Torphy75" -o "Synthesize" -s 4 -c $25 -p "31VLNZXfcpoA68wPRuWSdrmT3jv5k"``
+Example: ``artm --ych -n "Bessie Hettinger" -u "Jack.Torphy75" -o "Synthesize" -s 4 -c "$25" -p "31VLNZXfcpoA68wPRuWSdrmT3jv5k"``
 
 This will produce ``synthesize - 4 - bessie hettinger`` with the following contents:
 ```json
@@ -35,12 +36,13 @@ This will produce ``synthesize - 4 - bessie hettinger`` with the following conte
 ### Commissions
 
 ```
--c, --cust <customer>
+-n, --name <name>
 -o, --order <order>
+-c  --cost <cost>
 -p, --pay <payment>
 -u, --username <username>
 ```
-Example: ``artm comm -b "Alberta Mann" -u "Chanel_McKenzie7" -o "Tonga" -c $43 -p "5458-2118-9194-8514"``
+Example: ``artm --comm -n "Alberta Mann" -u "Chanel_McKenzie7" -o "Tonga" -c "$43" -p "5458-2118-9194-8514"``
 
 This will produce ``tonga - alberta mann.amc`` with the following contents:
 ```json

@@ -1,26 +1,32 @@
 // Copyright (c) Anthony Wilcox and contributors. All rights reserved.
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
-pub mod ast;
+pub mod models;
 
-use clap::{App, SubCommand, Arg};
+use clap::{App, Arg, crate_version};
 use std::process;
 use uuid::Uuid;
-use ast::{YCH, Commission, Request};
+use models::{YCH, Commission, Request};
 use chrono::prelude::*;
 
-// Arguments
+// Argument names
 // =======================
+const COMM_ARG: &str = "commission";
+const REQ_ARG: &str = "request";
 const YCH_ARG: &str = "ych";
-const COMM_ARG: &str = "comm";
-const REQ_ARG: &str = "req";
 
 const NAME_ARG: &str = "name";
 const UNAME_ARG: &str = "username";
+const ORDER_ARG: &str = "order";
+const PAYMENT_ARG: &str = "payment";
+const COST_ARG: &str = "cost";
+const SLOT_ARG: &str = "slot";
+// const RAFFLE_ARG: &str = "raffle";
 // =======================
 
+const ERROR_MSG: &str = "Application error";
+
 fn main() {
-    let error_message = "Application error";
     let exit_code = 1;
 
     // Todo: figure out test while still keeping yaml feature enabled
@@ -28,12 +34,16 @@ fn main() {
     // let matches = App::new(yaml).get_matches();
 
     let matches = App::new("Art Manager")
-        .version("0.2")
+        .version(crate_version!())
         .about("Request, commission, and YCH manager command line interface.")
-        .arg(Arg::with_name(YCH_ARG))
-        .arg(Arg::with_name(COMM_ARG))
-        .arg(Arg::with_name(REQ_ARG))
+        .arg(Arg::with_name(YCH_ARG)
+            .long(YCH_ARG))
+        .arg(Arg::with_name(COMM_ARG)
+            .long("comm"))
+        .arg(Arg::with_name(REQ_ARG)
+            .long("req"))
         .arg(Arg::with_name(NAME_ARG)
+            .required(true)
             .takes_value(true)
             .long(NAME_ARG)
             .short("n"))
@@ -42,38 +52,32 @@ fn main() {
             .takes_value(true)
             .long("user")
             .short("u"))
-        .arg(Arg::with_name("order")
+        .arg(Arg::with_name(ORDER_ARG)
             .takes_value(true)
             .long("ord")
             .short("o"))
-        .arg(Arg::with_name("cost")
+        .arg(Arg::with_name(COST_ARG)
             .takes_value(true)
-            .long("cost")
+            .long(COST_ARG)
             .short("c"))
-        .arg(Arg::with_name("slot")
+        .arg(Arg::with_name(SLOT_ARG)
             .takes_value(true)
-            .long("slot")
+            .long(SLOT_ARG)
             .short("s")
-            .requires("ych"))
-        .arg(Arg::with_name("raffle")
-            .takes_value(true)
-            .long("raf")
-            .short("r")
             .requires(YCH_ARG))
-        .arg(Arg::with_name("payment")
-            .required(true)
+        .arg(Arg::with_name(PAYMENT_ARG)
             .takes_value(true)
             .long("pay")
             .short("p"))
         .get_matches();
 
-    if matches.value_of(YCH_ARG) {
-        let ych_buyer = matches.value_of("buyer").unwrap();
-        let ych_order = matches.value_of("order").unwrap();
-        let ych_slot = matches.value_of("slot").unwrap();
-        let ych_cost = matches.value_of("cost").unwrap();
+    if matches.is_present(YCH_ARG) {
+        let ych_buyer = matches.value_of(NAME_ARG).unwrap();
+        let ych_order = matches.value_of(ORDER_ARG).unwrap();
+        let ych_slot = matches.value_of(SLOT_ARG).unwrap();
+        let ych_cost = matches.value_of(COST_ARG).unwrap();
         let ych_contact = matches.value_of(UNAME_ARG).unwrap();
-        let ych_payment = matches.value_of("payment").unwrap();
+        let ych_payment = matches.value_of(PAYMENT_ARG).unwrap();
 
         if let Err(err) = YCH::write_json(YCH {
             id: Uuid::new_v4()
@@ -87,18 +91,18 @@ fn main() {
             username: ych_contact.to_owned(),
             payment: ych_payment.to_owned(),
         }) {
-            println!("{}: {}", error_message, err);
+            println!("{}: {}", ERROR_MSG, err);
             process::exit(exit_code);
         }
     }
 
-    if matches.value_of("comm")
+    if matches.is_present(COMM_ARG)
     {
-        let comm_buyer = matches.value_of("buyer").unwrap();
-        let comm_order = matches.value_of("order").unwrap();
-        let comm_cost = matches.value_of("cost").unwrap();
+        let comm_buyer = matches.value_of(NAME_ARG).unwrap();
+        let comm_order = matches.value_of(ORDER_ARG).unwrap();
+        let comm_cost = matches.value_of(COST_ARG).unwrap();
         let comm_contact = matches.value_of(UNAME_ARG).unwrap();
-        let comm_payment = matches.value_of("payment").unwrap();
+        let comm_payment = matches.value_of(PAYMENT_ARG).unwrap();
 
         if let Err(err) = Commission::write_json(Commission {
             id: Uuid::new_v4()
@@ -111,8 +115,14 @@ fn main() {
             username: comm_contact.to_owned(),
             payment: comm_payment.to_owned(),
         }) {
-            println!("{}: {}", error_message, err);
+            println!("{}: {}", ERROR_MSG, err);
             process::exit(exit_code);
         }
+    }
+
+    if matches.is_present(REQ_ARG)
+    {
+        unimplemented!();
+        process::exit(exit_code);
     }
 }
