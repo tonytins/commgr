@@ -6,6 +6,6 @@ rust:
   - nightly
 matrix:
   allow_failures:
-    - rust: nightly
+    - rust: nightly, 1.31.0
   fast_finish: true
 cache: cargo
