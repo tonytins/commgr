@@ -1,6 +1,6 @@
 [package]
 name = "artm"
-version = "0.2.5"
+version = "0.2.10"
 authors = ["Anthony Wilcox"]
 repository = "https://github.com/antonwilc0x/artm"
 license = "GNU GPL v3"
@@ -11,6 +11,10 @@ A request, commmission, and YCH art manager.
 
 [dependencies]
 serde_json = "1.0"
+
+[dependencies.clap]
+version = "2.32"
+features = [ "yaml", "wrap_help" ]
 
 [dependencies.uuid]
 version = "0.7"
@@ -23,7 +27,3 @@ features = ["derive"]
 [dependencies.chrono]
 version = "0.4"
 features = ["serde"]
-
-[dependencies.clap]
-version = "2.32"
-features = [ "yaml", "wrap_help" ]

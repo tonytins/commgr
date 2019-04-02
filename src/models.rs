@@ -16,14 +16,14 @@ pub struct YCH {
     pub id: String,
     /// Uses the local time
     pub date: DateTime<Local>,
-    pub client: String,
+    pub customer: String,
     pub reference: String,
     /// The YCH
     pub art: String,
     /// Slot the customer won in the auction
     pub slot: String,
-    pub username: String,
-    pub cost: String,
+    pub contact: String,
+    pub price: String,
     /// Payment information (paypal, crypto, ect)
     pub payment: String,
 }
@@ -34,9 +34,9 @@ pub struct Commission {
     /// Uses the local time
     pub date: DateTime<Local>,
     pub art: String,
-    pub client: String,
-    pub username: String,
-    pub cost: String,
+    pub customer: String,
+    pub contact: String,
+    pub price: String,
     /// Payment information (paypal, crypto, ect)
     pub payment: String,
     pub description: String,
@@ -47,8 +47,8 @@ pub struct Request {
     pub id: String,
     /// Uses the local time
     pub date: DateTime<Local>,
-    pub client: String,
-    pub username: String,
+    pub customer: String,
+    pub contact: String,
     pub art: String,
     pub description: String,
 }
@@ -56,15 +56,15 @@ pub struct Request {
 
 impl YCH {
     pub fn write_ych(ych: YCH) -> Result<()> {
-        let new_ych = YCH { id: ych.id, date: ych.date, client: ych.client,
-            art: ych.art, slot: ych.slot, username: ych.username,
-            payment: ych.payment, cost: ych.cost, reference: ych.reference
+        let new_ych = YCH { id: ych.id, date: ych.date, customer: ych.customer,
+            art: ych.art, slot: ych.slot, contact: ych.contact,
+            payment: ych.payment, price: ych.price, reference: ych.reference
         };
 
         let json_string = serde_json::to_string_pretty(&new_ych)?;
         let order_string = new_ych.art.to_owned().to_lowercase();
         let slot_string = new_ych.slot.to_owned().to_lowercase();
-        let client_string = new_ych.client.to_owned().to_lowercase();
+        let client_string = new_ych.customer.to_owned().to_lowercase();
         let file_name = format!("{} - {} - {}.{}",
                                 order_string, slot_string, client_string, AMY_EXT);
         let mut file = OpenOptions::new().write(true)
@@ -81,9 +81,9 @@ impl YCH {
 
     pub fn print_ych(ych: YCH) -> Result<()> {
 
-        let new_ych = YCH { id: ych.id, date: ych.date, client: ych.client,
-            art: ych.art, slot: ych.slot, username: ych.username,
-            payment: ych.payment, cost: ych.cost, reference: ych.reference
+        let new_ych = YCH { id: ych.id, date: ych.date, customer: ych.customer,
+            art: ych.art, slot: ych.slot, contact: ych.contact,
+            payment: ych.payment, price: ych.price, reference: ych.reference
         };
 
         let json_string = serde_json::to_string_pretty(&new_ych)?;
@@ -98,15 +98,15 @@ impl Commission {
     pub fn write_comm(comm: Commission) -> Result<()> {
 
         let new_comm = Commission {
-            id: comm.id, date: comm.date, client: comm.client,
-            username: comm.username, payment: comm.payment,
-            cost: comm.cost, description: comm.description,
+            id: comm.id, date: comm.date, customer: comm.customer,
+            contact: comm.contact, payment: comm.payment,
+            price: comm.price, description: comm.description,
             art: comm.art,
         };
 
         let json_string = serde_json::to_string_pretty(&new_comm)?;
         let order_string = new_comm.art.to_string().to_lowercase();
-        let client_string = new_comm.client.to_string().to_lowercase();
+        let client_string = new_comm.customer.to_string().to_lowercase();
         let file_name = format!("{} - {}.{}", order_string, client_string, AMC_EXT);
         let mut file = OpenOptions::new().write(true)
             .create_new(true)
@@ -124,9 +124,9 @@ impl Commission {
     pub fn print_comm(comm: Commission) -> Result<()> {
 
         let new_comm = Commission {
-            id: comm.id, date: comm.date, client: comm.client,
-            username: comm.username, payment: comm.payment,
-            cost: comm.cost, description: comm.description,
+            id: comm.id, date: comm.date, customer: comm.customer,
+            contact: comm.contact, payment: comm.payment,
+            price: comm.price, description: comm.description,
             art: comm.art,
         };
 
@@ -142,14 +142,14 @@ impl Request {
     pub fn write_req(req: Request) -> Result<()> {
 
         let new_req = Request {
-            id: req.id, date: req.date, username: req.username,
-            client: req.client, description: req.description,
+            id: req.id, date: req.date, contact: req.contact,
+            customer: req.customer, description: req.description,
             art: req.art
         };
 
         let json_string = serde_json::to_string_pretty(&new_req)?;
         let name_string = new_req.art.to_string().to_lowercase();
-        let client_string = new_req.client.to_string().to_lowercase();
+        let client_string = new_req.customer.to_string().to_lowercase();
         let file_name = format!("{} - {}.{}", name_string, client_string, AMR_EXT);
         let mut file = OpenOptions::new().write(true)
             .create_new(true)
@@ -166,8 +166,8 @@ impl Request {
     pub fn print_req(req: Request) -> Result<()> {
 
         let new_req = Request {
-            id: req.id, date: req.date, username: req.username,
-            client: req.client, description: req.description,
+            id: req.id, date: req.date, contact: req.contact,
+            customer: req.customer, description: req.description,
             art: req.art
         };
 

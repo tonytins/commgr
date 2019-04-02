@@ -9,8 +9,8 @@ pub const YCH_FLAG: &str = "ych";
 pub const REQ_FLAG: &str = "request";
 pub const DEBUG_FLAG: &str = "debug";
 
-pub const CLIENT_OPT: &str = "client";
-pub const UNAME_OPT: &str = "username";
+pub const CLIENT_OPT: &str = "customer";
+pub const CONTACT_OPT: &str = "contact";
 pub const ART_OPT: &str = "art";
 pub const PAYMENT_OPT: &str = "payment";
 pub const PRICE_OPT: &str = "price";

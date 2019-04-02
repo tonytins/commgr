@@ -21,29 +21,28 @@ fn main() {
         .version(crate_version!())
         .get_matches();
 
-    if matches.is_present(YCH_FLAG)
+    if let Some(ych) = matches.subcommand_matches(YCH_FLAG)
     {
-        let client = matches.value_of(CLIENT_OPT).unwrap();
-        let art = matches.value_of(ART_OPT).unwrap();
-        let reference = matches.value_of(REF_OPT).unwrap();
-        let slot = matches.value_of(SLOT_OPT).unwrap();
-        let price = matches.value_of(PRICE_OPT).unwrap();
-        let contact = matches.value_of(UNAME_OPT).unwrap();
-        let payment = matches.value_of(PAYMENT_OPT).unwrap();
+        let client = ych.value_of(CLIENT_OPT).unwrap();
+        let art = ych.value_of(ART_OPT).unwrap();
+        let reference = ych.value_of(REF_OPT).unwrap();
+        let slot = ych.value_of(SLOT_OPT).unwrap();
+        let price = ych.value_of(PRICE_OPT).unwrap();
+        let contact = ych.value_of(CONTACT_OPT).unwrap();
+        let payment = ych.value_of(PAYMENT_OPT).unwrap();
 
-        if matches.is_present(DEBUG_FLAG)
+        if ych.is_present(DEBUG_FLAG)
         {
             if let Err(err) = YCH::print_ych(YCH {
                 id: Uuid::new_v4()
-                    .to_hyphenated()
                     .to_string(),
                 date: Local::now(),
                 art: art.to_owned(),
-                client: client.to_owned(),
+                customer: client.to_owned(),
                 reference: reference.to_owned(),
-                cost: price.to_owned(),
+                price: price.to_owned(),
                 slot: slot.to_owned(),
-                username: contact.to_owned(),
+                contact: contact.to_owned(),
                 payment: payment.to_owned(),
             }) {
                 println!("{}: {}", ERROR_MSG, err);
@@ -54,15 +53,14 @@ fn main() {
         {
             if let Err(err) = YCH::write_ych(YCH {
                 id: Uuid::new_v4()
-                    .to_hyphenated()
                     .to_string(),
                 date: Local::now(),
                 art: art.to_owned(),
                 reference: reference.to_owned(),
-                client: client.to_owned(),
-                cost: price.to_owned(),
+                customer: client.to_owned(),
+                price: price.to_owned(),
                 slot: slot.to_owned(),
-                username: contact.to_owned(),
+                contact: contact.to_owned(),
                 payment: payment.to_owned(),
             }) {
                 println!("{}: {}", ERROR_MSG, err);
@@ -71,26 +69,25 @@ fn main() {
         }
     }
 
-    if matches.is_present(COMM_FLAG)
+    if let Some(comm) = matches.subcommand_matches(COMM_FLAG)
     {
-        let client = matches.value_of(CLIENT_OPT).unwrap();
-        let art = matches.value_of(ART_OPT).unwrap();
-        let cost = matches.value_of(PRICE_OPT).unwrap();
-        let contact = matches.value_of(UNAME_OPT).unwrap();
-        let payment = matches.value_of(PAYMENT_OPT).unwrap();
-        let description = matches.value_of(DESC_OPT).unwrap();
+        let client = comm.value_of(CLIENT_OPT).unwrap();
+        let art = comm.value_of(ART_OPT).unwrap();
+        let cost = comm.value_of(PRICE_OPT).unwrap();
+        let contact = comm.value_of(CONTACT_OPT).unwrap();
+        let payment = comm.value_of(PAYMENT_OPT).unwrap();
+        let description = comm.value_of(DESC_OPT).unwrap();
 
-        if matches.is_present(DEBUG_FLAG)
+        if comm.is_present(DEBUG_FLAG)
         {
             if let Err(err) = Commission::print_comm(Commission {
                 id: Uuid::new_v4()
-                    .to_hyphenated()
                     .to_string(),
                 date: Local::now(),
-                client: client.to_owned(),
+                customer: client.to_owned(),
                 art: art.to_owned(),
-                cost: cost.to_owned(),
-                username: contact.to_owned(),
+                price: cost.to_owned(),
+                contact: contact.to_owned(),
                 payment: payment.to_owned(),
                 description: description.to_owned(),
             }) {
@@ -102,13 +99,12 @@ fn main() {
         {
             if let Err(err) = Commission::write_comm(Commission {
                 id: Uuid::new_v4()
-                    .to_hyphenated()
                     .to_string(),
                 date: Local::now(),
-                client: client.to_owned(),
+                customer: client.to_owned(),
                 art: art.to_owned(),
-                cost: cost.to_owned(),
-                username: contact.to_owned(),
+                price: cost.to_owned(),
+                contact: contact.to_owned(),
                 payment: payment.to_owned(),
                 description: description.to_owned(),
             }) {
@@ -118,23 +114,22 @@ fn main() {
         }
     }
 
-    if matches.is_present(REQ_FLAG)
+    if let Some(req) = matches.subcommand_matches(REQ_FLAG)
     {
-        let client = matches.value_of(CLIENT_OPT).unwrap();
-        let art = matches.value_of(ART_OPT).unwrap();
-        let contact = matches.value_of(UNAME_OPT).unwrap();
-        let description = matches.value_of(DESC_OPT).unwrap();
+        let client = req.value_of(CLIENT_OPT).unwrap();
+        let art = req.value_of(ART_OPT).unwrap();
+        let contact = req.value_of(CONTACT_OPT).unwrap();
+        let description = req.value_of(DESC_OPT).unwrap();
 
-        if matches.is_present(DEBUG_FLAG)
+        if req.is_present(DEBUG_FLAG)
         {
             if let Err(err) = Request::print_req(Request {
                 id: Uuid::new_v4()
-                    .to_hyphenated()
                     .to_string(),
                 date: Local::now(),
                 art: art.to_owned(),
-                client: client.to_owned(),
-                username: contact.to_owned(),
+                customer: client.to_owned(),
+                contact: contact.to_owned(),
                 description: description.to_owned(),
             }) {
                 println!("{}: {}", ERROR_MSG, err);
@@ -145,12 +140,11 @@ fn main() {
         {
             if let Err(err) = Request::write_req(Request {
                 id: Uuid::new_v4()
-                    .to_hyphenated()
                     .to_string(),
                 date: Local::now(),
                 art: art.to_owned(),
-                client: client.to_owned(),
-                username: contact.to_owned(),
+                customer: client.to_owned(),
+                contact: contact.to_owned(),
                 description: description.to_owned(),
             }) {
                 println!("{}: {}", ERROR_MSG, err);
@@ -159,7 +153,7 @@ fn main() {
         }
     }
 
-    if let Some(_) = matches.subcommand_matches(RAFFLE_CMD)
+    if let Some(raf) = matches.subcommand_matches(RAFFLE_CMD)
     {
         unimplemented!();
     }
