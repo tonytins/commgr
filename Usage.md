@@ -2,10 +2,14 @@
 
 It's recommended to use quotation marks for field values, unless it involves numbers without any symbols, in order to allow for spaces. Examples shown below.
 
-## Requests
-``artm comm [FLAGS] --art <art> --cont <contact> --cust <customer> --desc <description>``
+There is no limitation on what the username and payment field has to be. As long as both provide a legit means of contact (email, FA, DA, ect..) and payment (paypal, crypto, bank, ect..), respectfully, it does not matter.
 
-Example: ``artm req --cust "Lupe Jacobson" --cont "Kasey.Goyette18" --art "virtual" --desc "Lorem ipsum [...]"``
+## Requests & Commissions
+
+### Requests
+``artm --comm --art <art> --cont <contact> --cust <customer> --desc <description>``
+
+Example: ``artm --req --cust "Lupe Jacobson" --cont "Kasey.Goyette18" --art "virtual" --desc "Lorem ipsum [...]"``
 
 This will produce ``virtual - lupe jacobson.amr`` with the following contents:
 ```json
@@ -19,12 +23,8 @@ This will produce ``virtual - lupe jacobson.amr`` with the following contents:
 }
 ```
 
-## YCHs & Commissions
-
-There is no limitation on what the username and payment field has to be. As long as both provide a legit means of contact (email, FA, DA, ect..) and payment (paypal, crypto, bank, ect..), respectfully, it does not matter.
-
 ### Commissions
-``artm comm [FLAGS] [OPTIONS] --cont <contact> --cust <customer> --desc <description> --pmt <payment> --price <price>``
+``artm --comm --cont <contact> --cust <customer> --desc <description> --pmt <payment> --price <price>``
 
 Example: ``artm comm --cust "Alberta Mann" --cont "Chanel_McKenzie7" --art "Tonga" --price "$43" --pmt "5458-2118-9194-8514" --desc "Lorem ipsum [...]"``
 
@@ -42,8 +42,8 @@ This will produce ``tonga - alberta mann.amc`` with the following contents:
 }
 ```
 
-### YCH
-``artm ych [FLAGS] [OPTIONS] --art <art> --cont <contact> --cust <customer> --pmt <payment> --price <price> --ref <reference>``
+## YCH
+``artm ych --art <art> --cont <contact> --cust <customer> --pmt <payment> --price <price> --ref <reference>``
 
 Example: ``artm ych --client "Bessie Hettinger" --contact "Jack.Torphy75" --art "Synthesize" --slot 4 --price "$25" --payment "31VLNZXfcpoA68wPRuWSdrmT3jv5k" --ref "https://www.furaffinity.net/view/20700210/"``
 
@@ -62,6 +62,6 @@ This will produce ``synthesize - 4 - bessie hettinger.amy`` with the following c
 }
 ```
 
-## Raffle
+### Raffle
 
 TBA

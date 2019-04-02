@@ -69,16 +69,16 @@ fn main() {
         }
     }
 
-    if let Some(comm) = matches.subcommand_matches(COMM_FLAG)
+    if matches.is_present(COMM_FLAG)
     {
-        let client = comm.value_of(CLIENT_OPT).unwrap();
-        let art = comm.value_of(ART_OPT).unwrap();
-        let cost = comm.value_of(PRICE_OPT).unwrap();
-        let contact = comm.value_of(CONTACT_OPT).unwrap();
-        let payment = comm.value_of(PAYMENT_OPT).unwrap();
-        let description = comm.value_of(DESC_OPT).unwrap();
+        let client = matches.value_of(CLIENT_OPT).unwrap();
+        let art = matches.value_of(ART_OPT).unwrap();
+        let cost = matches.value_of(PRICE_OPT).unwrap();
+        let contact = matches.value_of(CONTACT_OPT).unwrap();
+        let payment = matches.value_of(PAYMENT_OPT).unwrap();
+        let description = matches.value_of(DESC_OPT).unwrap();
 
-        if comm.is_present(DEBUG_FLAG)
+        if matches.is_present(DEBUG_FLAG)
         {
             if let Err(err) = Commission::print_comm(Commission {
                 id: Uuid::new_v4()
@@ -114,14 +114,14 @@ fn main() {
         }
     }
 
-    if let Some(req) = matches.subcommand_matches(REQ_FLAG)
+    if matches.is_present(REQ_FLAG)
     {
-        let client = req.value_of(CLIENT_OPT).unwrap();
-        let art = req.value_of(ART_OPT).unwrap();
-        let contact = req.value_of(CONTACT_OPT).unwrap();
-        let description = req.value_of(DESC_OPT).unwrap();
+        let client = matches.value_of(CLIENT_OPT).unwrap();
+        let art = matches.value_of(ART_OPT).unwrap();
+        let contact = matches.value_of(CONTACT_OPT).unwrap();
+        let description = matches.value_of(DESC_OPT).unwrap();
 
-        if req.is_present(DEBUG_FLAG)
+        if matches.is_present(DEBUG_FLAG)
         {
             if let Err(err) = Request::print_req(Request {
                 id: Uuid::new_v4()
