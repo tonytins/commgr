@@ -4,33 +4,51 @@ args:
       long: debug
   - ych:
       long: ych
+      conflicts_with:
+        - request
+        - commission
   - commission:
       long: comm
+      conflicts_with:
+        - ych
+        - request
   - request:
       long: req
-  - buyer:
-      short: b
-      long: buyer
+      conflicts_with:
+        - ych
+        - commission
+  - client:
+      long: client
       takes_value: true
-      required: true
-  - order:
-      short: o
-      long: order
+  - art:
+      long: art
       takes_value: true
   - slot:
-      short: s
       long: slot
       takes_value: true
   - payment:
-      short: p
-      long: pay
+      long: payment
       takes_value: true
   - username:
-      short: u
       long: uname
       takes_value: true
-      required: true
-  - cost:
-      short: c
-      long: cost
+  - price:
+      long: price
       takes_value: true
+  - reference:
+      long: ref
+      takes_value: true
+  - description:
+      long: desc
+      takes_value: true
+
+subcommands:
+  - raffle:
+      about: A varient of YCH where the person is choosen at random.
+      args:
+        - slot:
+            long: slot
+            takes_value: true
+        - tickets:
+            long: tickets
+            takes_value: true

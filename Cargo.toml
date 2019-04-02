@@ -1,7 +1,8 @@
 [package]
 name = "artm"
-version = "0.2.0"
+version = "0.2.5"
 authors = ["Anthony Wilcox"]
+repository = "https://github.com/antonwilc0x/artm"
 license = "GNU GPL v3"
 edition = "2018"
 description = """
