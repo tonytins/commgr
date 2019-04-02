@@ -33,6 +33,7 @@ args:
       aliases: [cost]
       takes_value: true
   - payment:
+      global: true
       long: payment
       aliases: [pmt]
       takes_value: true

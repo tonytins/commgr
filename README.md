@@ -2,15 +2,13 @@
 
 A command line interface for storing art request, commission, and YCH information. The application is a work in progress but contribution is welcomed.
 
-- Requires Rust 1.32 or above.
-
 ## Status
 
 | Branch | Status |
 | :---: | :---: |
 | Master | [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=master)](https://travis-ci.com/antonwilc0x/artm) |
-| Beta | TBA |
-| Stable | TBA |
+| Beta | [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=beta)](https://travis-ci.com/antonwilc0x/artm) |
+| Stable | [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=stable)](https://travis-ci.com/antonwilc0x/artm) |
 
 
 ## Usage
@@ -19,16 +17,15 @@ See the [usage](Usage.md) page for more information.
 
 ## To-do
 
-- [ ] Write to file
-    - [x] YCH: ``[order] - [slot] - [buyer].amy``
-    - [x] Commission: ``[order] - [buyer].amc``
-    - [ ] Request: TBA
-- [ ] Basic Submission Info
-    - [x] YCH
-    - [x] Commission
-    - [ ] Request
+See [TODO](TODO.md) page.
 
-## Supported platforms
+## Requirements
+
+### Prerequisites
+
+- Rust 1.32+
+
+### Platforms
 
 - Linux 2.16.8+
 - macOS 10.7+
