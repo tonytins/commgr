@@ -2,6 +2,8 @@
 
 A command line interface for storing art request, commission, and YCH information. The application is a work in progress but contribution is welcomed.
 
+- Requires Rust 1.32 or above.
+
 ## Status
 
 | Branch | Status |
