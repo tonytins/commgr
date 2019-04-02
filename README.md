@@ -6,7 +6,7 @@ A command line interface for storing art request, commission, and YCH informatio
 
 | Branch | Status |
 | :---: | :---: |
-| Master | [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=master)](https://travis-ci.com/antonwilc0x/artmanager) |
+| Master | [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=master)](https://travis-ci.com/antonwilc0x/artm) |
 | Beta | TBA |
 | Stable | TBA |
 
