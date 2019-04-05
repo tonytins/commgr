@@ -1,20 +1,17 @@
 name: Art Manager
 args:
-  - commission:
-      long: comm
-  - request:
-      aliases: [req]
-      long: request
   - database:
       long: db
+  - category:
+      long: cat
+      takes_value: true
+      possible_values: [ych, comm, req]
   - debug:
       help: Outputs debug information.
-      global: true
       aliases: [dbg]
       long: debug
       short: d
   - customer:
-      global: true
       long: cust
       takes_value: true
   - art:
@@ -30,41 +27,16 @@ args:
       long: contact
       takes_value: true
   - price:
-      global: true
       long: price
       aliases: [cost]
       takes_value: true
-  - file:
-    global: true
-    long: file
-    takes_value: true
   - payment:
-      global: true
       long: payment
       aliases: [pmt]
       takes_value: true
-
-subcommands:
-  - ych:
-      subcommands:
-        - raffle:
-            aliases: [raf]
-            about: A varient of YCH.
-            args:
-            - slots:
-                long: slots
-                takes_value: true
-            - tickets:
-                aliases: [tkts]
-                long: tickets
-                takes_value: true
-      about: Your Character Here.
-      args:
-        - slot:
-            long: slot
-            takes_value: true
-            required: true
-        - reference:
-            long: ref
-            takes_value: true
-            required: true
+  - slot:
+      long: slot
+      takes_value: true
+  - reference:
+      long: ref
+      takes_value: true

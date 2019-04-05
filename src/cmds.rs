@@ -4,14 +4,15 @@
 
 // Argument names
 // =======================
-pub const YCH_CMD: &str = "ych";
 pub const RAFFLE_CMD: &str = "raffle";
 
 pub const COMM_FLAG: &str = "commission";
 pub const REQ_FLAG: &str = "request";
+pub const YCH_FLAG: &str = "ych";
 pub const DEBUG_FLAG: &str = "debug";
 pub const DATABASE_FLAG: &str = "database";
 
+pub const CAT_OPT: &str = "category";
 pub const CLIENT_OPT: &str = "customer";
 pub const CONTACT_OPT: &str = "contact";
 pub const ART_OPT: &str = "art";
