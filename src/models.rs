@@ -1,16 +1,24 @@
 // Copyright (c) Anthony Wilcox and contributors. All rights reserved.
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
-use std::io::Write;
-use std::fs::OpenOptions;
+use chrono::prelude::*;
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
-use chrono::prelude::*;
+use std::fs::OpenOptions;
+use std::io::Write;
 
 const AMY_EXT: &str = "amy";
 const AMC_EXT: &str = "amc";
 const AMR_EXT: &str = "amr";
 
+pub enum Category {
+    YCH,
+    Commission,
+    Request,
+    Unknown
+}
+
+#[obsolete]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct YCH {
     pub id: String,
@@ -28,6 +36,7 @@ pub struct YCH {
     pub payment: String,
 }
 
+#[obsolete]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Commission {
     pub id: String,
@@ -42,6 +51,7 @@ pub struct Commission {
     pub description: String,
 }
 
+#[obsolete]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Request {
     pub id: String,
@@ -53,6 +63,58 @@ pub struct Request {
     pub description: String,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Customer {
+    pub name: String,
+    pub contact: String,
+    /// Payment information (paypal, crypto, ect)
+    pub payment: Option<String>,
+}
+
+#[derive(Default, Serialize, Deserialize, Debug)]
+pub struct Art {
+    pub id: String,
+    pub category: Option<Category>,
+    /// Use local time
+    pub date: DateTime<Local>,
+    pub customer: Option<Customer>,
+    pub ticket: Option<Raffle>,
+    pub slot: Option<String>,
+    pub price: Option<String>,
+    pub description: Option<String>,
+}
+
+impl Default for Category {
+    fn default() -> Self { Category::Unknown }
+}
+
+
+impl Art {
+    pub fn customer<S: Into<String>>(cust: S)
+        -> String where S: Into<String> {
+        cust.into()
+    }
+
+    pub fn contact<S: Into<String>>(cont: S)
+        -> String where S: Into<String> {
+        cont.into()
+    }
+
+    pub fn art<S: Into<String>>(art: S)
+        -> String where S: Into<String> {
+        art.into()
+    }
+
+    pub fn price<S: Into<String>>(price: S)
+        -> String where S: Into<String> {
+        price.into()
+    }
+
+    pub fn description<S: Into<String>>(desc: S)
+        -> String where S: Into<String> {
+        desc.into()
+    }
+}
 
 impl YCH {
     pub fn write_ych(ych: YCH) -> Result<()> {

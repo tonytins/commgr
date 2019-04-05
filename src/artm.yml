@@ -5,6 +5,8 @@ args:
   - request:
       aliases: [req]
       long: request
+  - database:
+      long: db
   - debug:
       help: Outputs debug information.
       global: true
@@ -32,6 +34,10 @@ args:
       long: price
       aliases: [cost]
       takes_value: true
+  - file:
+    global: true
+    long: file
+    takes_value: true
   - payment:
       global: true
       long: payment
@@ -45,18 +51,20 @@ subcommands:
             aliases: [raf]
             about: A varient of YCH.
             args:
-              - tickets:
-                  aliases: [tkts]
-                  long: tickets
-                  takes_value: true
-                  required: true
+            - slots:
+                long: slots
+                takes_value: true
+            - tickets:
+                aliases: [tkts]
+                long: tickets
+                takes_value: true
       about: Your Character Here.
       args:
         - slot:
-            global: true
             long: slot
             takes_value: true
+            required: true
         - reference:
             long: ref
             takes_value: true
-            global: true
+            required: true
