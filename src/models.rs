@@ -106,6 +106,12 @@ impl Art {
         }
     }
 
+    pub fn ticket<S: Into<String>>(mut self, ticket: S) -> Art where S: Into<String> {
+        self.ticket = Some(ticket.into());
+
+        self
+    }
+
     pub fn secure_id(mut self) -> Art {
         let hash = Uuid::new_v5(&Uuid::NAMESPACE_OID,format!("{}+artm", self.name).as_bytes())
             .to_hyphenated().to_string();

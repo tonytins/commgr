@@ -5,6 +5,7 @@ pub mod models;
 pub mod cmds;
 
 use chrono::prelude::*;
+use rand::Rng;
 use clap::{crate_authors, crate_description, crate_version, load_yaml, App};
 use models::{Category, Customer, Art};
 use std::process;
@@ -42,5 +43,26 @@ fn main() {
         .write_file(matches.is_present(DEBUG_FLAG)) {
         println!("{}: {}", ERROR_MSG, err);
         process::exit(exit_code);
+    }
+
+    if let Some(raf) = matches.subcommand_matches(RAFFLE_CMD) {
+        let tickets = raf.value_of(TICKETS_OPT).unwrap();
+        let slots = raf.value_of(SLOTS_OPT).unwrap();
+
+        let choose_ticket = format!("{}", rand::thread_rng().gen_range(1, tickets.parse().unwrap()));
+        let choose_slot = format!("{}", rand::thread_rng().gen_range(1, slots.parse().unwrap()));
+
+        if let Err(err) = Art::new()
+            .price(price)
+            .name(art)
+            .category("ych")
+            .slot(choose_slot)
+            .ticket(choose_ticket)
+            .secure_id()
+            .write_file(matches.is_present(DEBUG_FLAG)) {
+            println!("{}: {}", ERROR_MSG, err);
+            process::exit(exit_code);
+        }
+
     }
 }

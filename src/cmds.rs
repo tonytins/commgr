@@ -14,6 +14,8 @@ pub const DATABASE_FLAG: &str = "database";
 
 pub const CAT_OPT: &str = "category";
 pub const CLIENT_OPT: &str = "customer";
+pub const TICKETS_OPT: &str = "tickets";
+pub const SLOTS_OPT: &str = "slots";
 pub const CONTACT_OPT: &str = "contact";
 pub const ART_OPT: &str = "art";
 pub const PAYMENT_OPT: &str = "payment";
