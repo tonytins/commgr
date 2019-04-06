@@ -1,13 +1,17 @@
 // Copyright (c) Anthony Wilcox and contributors. All rights reserved.
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
+use sha2::{Sha256, Sha512, Digest};
 use chrono::prelude::*;
 use uuid::Uuid;
+use crate::cmds::*;
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
 use std::fs::OpenOptions;
 use std::io::Write;
 use core::fmt::Debug;
+use std::process;
+use rand::{Rng, thread_rng};
 
 const ARTM_EXT: &str = "artm";
 
@@ -16,6 +20,7 @@ pub enum Category {
     YCH,
     Commission,
     Request,
+    Raffle,
     Unknown
 }
 
@@ -23,8 +28,6 @@ pub enum Category {
 pub struct Customer {
     pub name: String,
     pub contact: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub reference: Option<String>,
     /// Payment information (paypal, crypto, ect)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub payment: Option<String>,
@@ -37,6 +40,7 @@ pub struct Art {
     pub date: DateTime<Local>,
     pub version: String,
     pub name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub category: Option<Category>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub ticket: Option<String>,
@@ -44,6 +48,8 @@ pub struct Art {
     pub slot: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub price: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reference: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -59,7 +65,6 @@ impl Customer {
         Customer {
             name: "".to_string(),
             contact: "".to_string(),
-            reference: None,
             payment: None
         }
     }
@@ -76,12 +81,6 @@ impl Customer {
         self
     }
 
-    pub fn reference<S: Into<String>>(mut self, reference: S)
-                                    -> Customer where S: Into<String> {
-        self.reference = Some(reference.into());
-        self
-    }
-
     pub fn payment<S: Into<String>>(mut self, pay: S)
         -> Customer where S: Into<String> {
         self.payment = Some(pay.into());
@@ -93,30 +92,38 @@ impl Art {
 
     pub fn new() -> Art {
         Art {
-            id: Uuid::new_v4().to_hyphenated().to_string(),
+            id: "".to_string(),
             date: Local::now(),
             version: "0.1".to_string(),
             name: "".to_string(),
             category: Some(Category::default()),
             customer: None,
             ticket: None,
+            reference: None,
             slot: None,
             price: None,
             description: None
         }
     }
 
-    pub fn ticket<S: Into<String>>(mut self, ticket: S) -> Art where S: Into<String> {
-        self.ticket = Some(ticket.into());
+    pub fn raffle<S: Into<String>>(mut self, ticket: S, slot: S) -> Art where S: Into<String> {
+        let choosen_ticket = ticket.into();
+        let choosen_slot = slot.into();
+        let mut hasher = Sha256::digest(format!("artm+{}{}{}",
+                                                self.name, choosen_ticket, choosen_slot).as_bytes());
+
+        self.ticket = Some(choosen_ticket);
+        self.slot = Some(choosen_slot);
+        self.id = format!("{:x}", hasher);
 
         self
     }
 
     pub fn secure_id(mut self) -> Art {
-        let hash = Uuid::new_v5(&Uuid::NAMESPACE_OID,format!("{}+artm", self.name).as_bytes())
-            .to_hyphenated().to_string();
+        let hasher = Sha256::digest(format!("artm:{:?}{}",
+                                            self.category, self.name).as_bytes());
 
-        self.id = hash;
+        self.id = format!("{:x}", hasher);
 
         self
     }
@@ -150,17 +157,18 @@ impl Art {
         self
     }
 
-    pub fn reference<S: Into<String>>(mut self, desc: S)
+    pub fn reference<S: Into<String>>(mut self, reference: S)
                                         -> Art where S: Into<String> {
-        self.description = Some(desc.into());
+        self.reference = Some(reference.into());
         self
     }
 
-    pub fn category(mut self, cat: &str) -> Art {
+    pub fn category(mut self, cat: Category) -> Art {
         match cat {
-            "ych" => self.category = Some(Category::YCH),
-            "comm" => self.category = Some(Category::Commission),
-            "req" => self.category = Some(Category::Request),
+            Category::YCH => self.category = Some(Category::YCH),
+            Category::Commission => self.category = Some(Category::Commission),
+            Category::Request => self.category = Some(Category::Request),
+            Category::Raffle => self.category = Some(Category::Raffle),
             _ => self.category = Some(Category::default()),
         }
         self
@@ -173,14 +181,19 @@ impl Art {
             true => println!("{}", json_string),
             false => {
                 let cat = &self.category;
+                let ticket = self.ticket.to_owned().unwrap();
                 let slot = self.slot.to_owned().unwrap();
                 let name = self.name.to_owned();
                 let mut file_name = String::new();
 
                 match cat {
                     Some(Category::YCH) => {
-                        file_name = format!("{} - slot {}.{}",
+                        file_name = format!("{} - {}.{}",
                                                 name, slot, ARTM_EXT);
+                    }
+                    Some(Category::Raffle) => {
+                        file_name = format!("{} - {} {}.{}",
+                                            name, ticket, slot, ARTM_EXT);
                     }
                     _ => {
                         file_name = format!("{}.{}",
@@ -200,5 +213,74 @@ impl Art {
         }
 
         Ok(())
+    }
+}
+
+pub fn ych<S: Into<String>>(name: S, price: S, slot: S,
+                            reference: S, cust_name: S,  pay: S,
+                            cont: S, debug: bool) where S: Into<String> {
+    if let Err(err) = Art::new()
+        .price(price)
+        .name(name)
+        .category(Category::YCH)
+        .slot(slot)
+        .reference(reference)
+        .customer(Customer::new()
+            .name(cust_name)
+            .payment(pay)
+            .contact(cont))
+        .secure_id()
+        .write_file(debug) {
+        println!("{}: {}", ERROR_MSG, err);
+        process::exit(EXIT_CODE);
+    }
+}
+
+pub fn comm<S: Into<String>>(name: S, price: S, desc: S,
+                             cust_name: S, pay: S,
+                             cont: S, debug: bool) where S: Into<String> {
+    if let Err(err) = Art::new()
+        .price(price)
+        .name(name)
+        .category(Category::Commission)
+        .customer(Customer::new()
+            .name(cust_name)
+            .payment(pay)
+            .contact(cont))
+        .description(desc)
+        .secure_id()
+        .write_file(debug) {
+        println!("{}: {}", ERROR_MSG, err);
+        process::exit(EXIT_CODE);
+    }
+}
+
+pub fn req<S: Into<String>>(name: S, desc: S, cust_name: S,
+                            cont: S, debug: bool) where S: Into<String> {
+    if let Err(err) = Art::new()
+        .name(name)
+        .category(Category::Request)
+        .customer(Customer::new()
+            .name(cust_name)
+            .contact(cont))
+        .description(desc)
+        .secure_id()
+        .write_file(debug) {
+        println!("{}: {}", ERROR_MSG, err);
+        process::exit(EXIT_CODE);
+    }
+}
+
+pub fn raffle<S: Into<String>>(name: S, tickets: i32, slots: i32, debug: bool) where S: Into<String> {
+    let choose_ticket = format!("{}", thread_rng().gen_range(1, tickets));
+    let choose_slot = format!("{}", thread_rng().gen_range(1, slots));
+
+    if let Err(err) = Art::new()
+        .name(name)
+        .category(Category::Raffle)
+        .raffle(choose_ticket, choose_slot)
+        .write_file(debug) {
+        println!("{}: {}", ERROR_MSG, err);
+        process::exit(EXIT_CODE);
     }
 }

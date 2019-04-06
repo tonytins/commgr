@@ -1,12 +1,5 @@
 name: Art Manager
 args:
-  - database:
-      long: db
-  - category:
-      long: cat
-      takes_value: true
-      possible_values: [ych, comm, req]
-      global: true
   - debug:
       help: Outputs debug information.
       aliases: [dbg]
@@ -16,8 +9,12 @@ args:
   - customer:
       long: cust
       takes_value: true
-  - art:
-      long: art
+  - name:
+      long: name
+      takes_value: true
+      global: true
+  - reference:
+      long: ref
       takes_value: true
   - description:
       long: desc
@@ -37,13 +34,10 @@ args:
   - slot:
       long: slot
       takes_value: true
-  - reference:
-      long: ref
-      takes_value: true
 
 subcommands:
   - raffle:
-      about: YCH raffle
+      about: YCH raffle. Coming soon.
       args:
         - tickets:
             aliases: [tkts]
