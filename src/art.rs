@@ -92,7 +92,7 @@ impl Art {
 
     pub fn new() -> Art {
         Art {
-            id: "".to_string(),
+            id: Uuid::new_v4().to_string(),
             date: Local::now(),
             version: "0.1".to_string(),
             name: "".to_string(),
@@ -177,38 +177,42 @@ impl Art {
     pub fn write_file(&self, debug: bool) -> Result<()> {
         let json_string = serde_json::to_string_pretty(self)?;
 
-        match debug {
-            true => println!("{}", json_string),
-            false => {
-                let cat = &self.category;
-                let ticket = self.ticket.to_owned().unwrap();
-                let slot = self.slot.to_owned().unwrap();
-                let name = self.name.to_owned();
-                let mut file_name = String::new();
+        if debug == true {
+            println!("{}", json_string);
+        }
+        else
+        {
+            let cat = &self.category;
+            let mut slot = String::new();
+            let name = self.name.to_owned();
+            let mut file_name = String::new();
 
-                match cat {
-                    Some(Category::YCH) => {
-                        file_name = format!("{} - {}.{}",
-                                                name, slot, ARTM_EXT);
-                    }
-                    Some(Category::Raffle) => {
-                        file_name = format!("{} - {} {}.{}",
-                                            name, ticket, slot, ARTM_EXT);
-                    }
-                    _ => {
-                        file_name = format!("{}.{}",
-                                            name, ARTM_EXT);
-                    }
+            match cat {
+                Some(Category::YCH) => {
+                    slot = self.slot.to_owned().unwrap();
+                    file_name = format!("{} - {}.{}",
+                                        name, slot, ARTM_EXT);
                 }
+                Some(Category::Raffle) => {
+                    slot = self.slot.to_owned().unwrap();
+                    let ticket = self.ticket.to_owned().unwrap();
 
-                let mut file = OpenOptions::new().write(true)
-                    .create_new(true)
-                    .open(file_name)
-                    .expect("Could not open file.");
-
-                if let Err(err) = writeln!(file, "{}", format!("{}", json_string)) {
-                    eprintln!("Could not write to file. {}", err);
+                    file_name = format!("{} - {} {}.{}",
+                                        name, ticket, slot, ARTM_EXT);
                 }
+                _ => {
+                    file_name = format!("{}.{}",
+                                        name, ARTM_EXT);
+                }
+            }
+
+            let mut file = OpenOptions::new().write(true)
+                .create_new(true)
+                .open(file_name)
+                .expect("Could not open file.");
+
+            if let Err(err) = writeln!(file, "{}", format!("{}", json_string)) {
+                eprintln!("Could not write to file. {}", err);
             }
         }
 
