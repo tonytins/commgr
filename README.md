@@ -2,8 +2,6 @@
 
 A command line interface for storing art request, commission, and YCH information. The application is a work in progress but contribution is welcomed.
 
-## Status
-
 | Branch | Status |
 | :---: | :---: |
 | Master | [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=master)](https://travis-ci.com/antonwilc0x/artm) |

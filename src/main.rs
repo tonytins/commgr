@@ -1,160 +1,84 @@
 // Copyright (c) Anthony Wilcox and contributors. All rights reserved.
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
-pub mod models;
-pub mod tstr;
+pub mod art;
+pub mod cmds;
 
-use clap::{App, crate_version, crate_authors,
-           crate_description, load_yaml};
-use std::process;
-use uuid::Uuid;
-use models::{YCH, Commission, Request};
-use chrono::prelude::*;
-use tstr::*;
+use clap::{crate_authors, crate_description, crate_version, load_yaml, App};
+use art::{ych, comm, req};
+use simplelog::*;
+use std::fs::File;
+use cmds::*;
 
 fn main() {
-    let exit_code = 1;
-    let yaml = load_yaml!("cli.yml");
+    let log_file = "artm.log";
+
+    CombinedLogger::init(
+        vec![
+            TermLogger::new(LevelFilter::Warn,
+                            Config::default()).unwrap(),
+            WriteLogger::new(LevelFilter::Info,
+                             Config::default(),
+                             File::create(log_file).unwrap()),
+
+        ]
+    ).unwrap();
+
+    let yaml = load_yaml!("artm.yml");
     let matches = App::from_yaml(yaml)
         .author(crate_authors!())
         .about(crate_description!())
         .version(crate_version!())
         .get_matches();
 
-    if let Some(ych) = matches.subcommand_matches(YCH_FLAG)
-    {
-        let client = ych.value_of(CLIENT_OPT).unwrap();
-        let art = ych.value_of(ART_OPT).unwrap();
-        let reference = ych.value_of(REF_OPT).unwrap();
-        let slot = ych.value_of(SLOT_OPT).unwrap();
-        let price = ych.value_of(PRICE_OPT).unwrap();
-        let contact = ych.value_of(CONTACT_OPT).unwrap();
-        let payment = ych.value_of(PAYMENT_OPT).unwrap();
+    let debug = matches.is_present(DEBUG_FLAG);
+    let name = matches.value_of(NAME_OPT).unwrap();
 
-        if ych.is_present(DEBUG_FLAG)
-        {
-            if let Err(err) = YCH::print_ych(YCH {
-                id: Uuid::new_v4()
-                    .to_string(),
-                date: Local::now(),
-                art: art.to_owned(),
-                customer: client.to_owned(),
-                reference: reference.to_owned(),
-                price: price.to_owned(),
-                slot: slot.to_owned(),
-                contact: contact.to_owned(),
-                payment: payment.to_owned(),
-            }) {
-                println!("{}: {}", ERROR_MSG, err);
-                process::exit(exit_code);
+    let mut cust_name = "";
+    let mut desc= "";
+    let mut contact = "";
+    let mut slot = "";
+    let mut payment = "";
+    let mut price = "";
+    let mut reference = "";
+
+    if !matches.is_present(RAFFLE_CMD) {
+        cust_name = matches.value_of(CUST_NAME_OPT).unwrap();
+        contact = matches.value_of(CONTACT_OPT).unwrap();
+
+        match matches.is_present(PAYMENT_OPT) {
+            true => {
+                payment = matches.value_of(PAYMENT_OPT).unwrap();
+                price = matches.value_of(PRICE_OPT).unwrap();
+
+                match matches.is_present(SLOT_OPT) || matches.is_present(REF_OPT) {
+                    true => {
+                        slot = matches.value_of(SLOT_OPT).unwrap();
+                        reference = matches.value_of(REF_OPT).unwrap();
+
+                        ych(name, price, slot, reference, cust_name, payment, contact, debug);
+                    }
+                    false => {
+                        desc = matches.value_of(DESC_OPT).unwrap();
+
+                        comm(name, price, desc, cust_name,payment, contact, debug);
+                    }
+                }
             }
-        }
-        else
-        {
-            if let Err(err) = YCH::write_ych(YCH {
-                id: Uuid::new_v4()
-                    .to_string(),
-                date: Local::now(),
-                art: art.to_owned(),
-                reference: reference.to_owned(),
-                customer: client.to_owned(),
-                price: price.to_owned(),
-                slot: slot.to_owned(),
-                contact: contact.to_owned(),
-                payment: payment.to_owned(),
-            }) {
-                println!("{}: {}", ERROR_MSG, err);
-                process::exit(exit_code);
+            false => {
+                desc = matches.value_of(DESC_OPT).unwrap();
+
+                req(name, desc, cust_name, contact, debug);
             }
         }
     }
+    else {
+        /*
+        let slots = matches.value_of(SLOTS_OPT).unwrap();
+        let tickets = matches.value_of(TICKETS_OPT).unwrap();
 
-    if matches.is_present(COMM_FLAG)
-    {
-        let client = matches.value_of(CLIENT_OPT).unwrap();
-        let art = matches.value_of(ART_OPT).unwrap();
-        let cost = matches.value_of(PRICE_OPT).unwrap();
-        let contact = matches.value_of(CONTACT_OPT).unwrap();
-        let payment = matches.value_of(PAYMENT_OPT).unwrap();
-        let description = matches.value_of(DESC_OPT).unwrap();
-
-        if matches.is_present(DEBUG_FLAG)
-        {
-            if let Err(err) = Commission::print_comm(Commission {
-                id: Uuid::new_v4()
-                    .to_string(),
-                date: Local::now(),
-                customer: client.to_owned(),
-                art: art.to_owned(),
-                price: cost.to_owned(),
-                contact: contact.to_owned(),
-                payment: payment.to_owned(),
-                description: description.to_owned(),
-            }) {
-                println!("{}: {}", ERROR_MSG, err);
-                process::exit(exit_code);
-            }
-        }
-        else
-        {
-            if let Err(err) = Commission::write_comm(Commission {
-                id: Uuid::new_v4()
-                    .to_string(),
-                date: Local::now(),
-                customer: client.to_owned(),
-                art: art.to_owned(),
-                price: cost.to_owned(),
-                contact: contact.to_owned(),
-                payment: payment.to_owned(),
-                description: description.to_owned(),
-            }) {
-                println!("{}: {}", ERROR_MSG, err);
-                process::exit(exit_code);
-            }
-        }
-    }
-
-    if matches.is_present(REQ_FLAG)
-    {
-        let client = matches.value_of(CLIENT_OPT).unwrap();
-        let art = matches.value_of(ART_OPT).unwrap();
-        let contact = matches.value_of(CONTACT_OPT).unwrap();
-        let description = matches.value_of(DESC_OPT).unwrap();
-
-        if matches.is_present(DEBUG_FLAG)
-        {
-            if let Err(err) = Request::print_req(Request {
-                id: Uuid::new_v4()
-                    .to_string(),
-                date: Local::now(),
-                art: art.to_owned(),
-                customer: client.to_owned(),
-                contact: contact.to_owned(),
-                description: description.to_owned(),
-            }) {
-                println!("{}: {}", ERROR_MSG, err);
-                process::exit(exit_code);
-            }
-        }
-        else
-        {
-            if let Err(err) = Request::write_req(Request {
-                id: Uuid::new_v4()
-                    .to_string(),
-                date: Local::now(),
-                art: art.to_owned(),
-                customer: client.to_owned(),
-                contact: contact.to_owned(),
-                description: description.to_owned(),
-            }) {
-                println!("{}: {}", ERROR_MSG, err);
-                process::exit(exit_code);
-            }
-        }
-    }
-
-    if let Some(raf) = matches.subcommand_matches(RAFFLE_CMD)
-    {
+        raffle(name, tickets.parse().unwrap(), slots.parse().unwrap(), debug);
+        */
         unimplemented!();
     }
 }
