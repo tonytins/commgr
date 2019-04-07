@@ -5,11 +5,25 @@ pub mod art;
 pub mod cmds;
 
 use clap::{crate_authors, crate_description, crate_version, load_yaml, App};
-use art::{ych, comm, req, raffle};
+use art::{ych, comm, req};
+use simplelog::*;
+use std::fs::File;
 use cmds::*;
 
 fn main() {
-    let exit_code = 1;
+    let log_file = "artm.log";
+
+    CombinedLogger::init(
+        vec![
+            TermLogger::new(LevelFilter::Warn,
+                            Config::default()).unwrap(),
+            WriteLogger::new(LevelFilter::Info,
+                             Config::default(),
+                             File::create(log_file).unwrap()),
+
+        ]
+    ).unwrap();
+
     let yaml = load_yaml!("artm.yml");
     let matches = App::from_yaml(yaml)
         .author(crate_authors!())

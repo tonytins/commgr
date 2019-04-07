@@ -2,15 +2,16 @@
 
 ## 0.3.0
 
-- New ``.artm`` format that unfies the former into a single one with many options.
-- YCH, Commission, and Request subcommands, flags or values are no longer required! Finally. The program assumes what you want based on the options selected - as it should be, imo. For example, if ``--payment`` and ``--slot`` isn't used then it assumes you're referring to a Request. This doesn't effect Raffle system.
+- ``.art[ycr]`` replaces the former ``.artm[ycr]`` format.
+- Submissions and file creations are now logged.
+- YCH, Commission, and Request subcommands, flags or values are no longer required! Finally. The program assumes what you want based on the options selected - as it should be, imo. For example, if ``--payment`` and ``--slot`` isn't used then it assumes you're referring to a Request. Raffle remains it's own subcommand with different arguments.
 - ``--art`` was renamed to ``--name`` and has been made global for use with the ``raffe`` subcommand. However, ``--cust`` renames the same.
 - Secure ID and Raffle methods now generate their own respective IDs based on Sha256.
 
 
-### .artm format
+### .artm* is now .art*
 
-The most notable improvement that compliments the above changes is the merger of ``.arty``, ``.artc`` and ``.artr`` into the singular ``.artm`` format. The reason why this wasn't done earlier is because I initially wrote this with not much understanding of [Clap](https://github.com/clap-rs/clap)'s potential and that all three former formats were different implementations all doing the same thing.
+The current ``.artm[ycr]`` formats has been redone as ``.art[ycr]``. The older format were based on three independent implementations that all did very similar things but lacked room for change. This worked as a proof-as-concept but left no room to grow. This new format merges all three by making every field optional and won't show up, if left empty, with the exception of name, version, date and Id.
 
 ```json
 {
@@ -47,11 +48,11 @@ And so the previous YCH example found in the usage page becomes...
   }
 }
 ```
-We're able to create as many variations of this format as we want using the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern), this method is common in a lot of Rust libraries and frameworks. This takes care of a lot of the heavy lifting that had been done previously.
+We're able to create as many variations of this format as we want using the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern), this method is common in a lot of Rust libraries and frameworks. This takes care of a lot of the heavy lifting and allows for any number of combination to exist.
 
 ```rust
 // Example
-Art::new()
+    if let Err(err) = Art::new()
         .price(price)
         .name(name)
         .category(Category::YCH)
@@ -62,7 +63,11 @@ Art::new()
             .payment(pay)
             .contact(cont))
         .secure_id()
-        .write_file(debug);
+        .debug(debug)
+        .write_file() {
+        println!("{}: {}", ERROR_MSG, err);
+        process::exit(EXIT_CODE);
+    }
 ```
 
 ### Secure Ids

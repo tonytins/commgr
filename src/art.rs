@@ -1,19 +1,17 @@
 // Copyright (c) Anthony Wilcox and contributors. All rights reserved.
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
-use sha2::{Sha256, Sha512, Digest};
+use log::{info};
+use sha2::{Sha256, Digest};
 use chrono::prelude::*;
-use uuid::Uuid;
-use crate::cmds::*;
+use uuid::{Uuid};
+use cmds::*;
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
 use std::fs::OpenOptions;
 use std::io::Write;
-use core::fmt::Debug;
 use std::process;
 use rand::{Rng, thread_rng};
-
-const ARTM_EXT: &str = "artm";
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Category {
@@ -113,7 +111,7 @@ impl Art {
         let choosen_ticket = ticket.into();
         let choosen_slot = slot.into();
         let lt = Local::now();
-        let tf = format!("{}{}{}{}", lt.month(), lt.day(), lt.hour(), lt.minute());
+        let tf = format!("{}{}{}{}{}", lt.year(), lt.month(), lt.day(), lt.hour(), lt.minute());
         let hasher = Sha256::digest(format!("artm:{}{}{}{}",
                                             tf, self.name, choosen_ticket, choosen_slot).as_bytes());
 
@@ -190,40 +188,67 @@ impl Art {
     pub fn write_file(&self) -> Result<()> {
         let json_string = serde_json::to_string_pretty(self)?;
         let is_debug = self.debug.unwrap();
+        let cat = &self.category;
+        let mut ticket = "".to_string();
+        let mut slot = "".to_string();
+        let name = self.name.to_owned();
 
         if is_debug == true {
+            match cat {
+                Some(Category::YCH) => {
+                    slot = self.slot.to_owned().unwrap();
+                    info!("YCH: {}, slot {}", name, slot);
+                }
+                Some(Category::Raffle) => {
+                    ticket = self.ticket.to_owned().unwrap();
+                    info!("Raffle: {}, ticket {}, slot {}", name, ticket, slot);
+                }
+                Some(Category::Request) => {
+                    info!("Request: {}", name);
+                }
+                Some(Category::Commission) => {
+                    info!("Commission: {}", name);
+                }
+                _ => {}
+            }
+
             println!("{}", json_string);
         }
         else
         {
-            let cat = &self.category;
-            let mut slot = "".to_string();
-            let mut cust = "".to_string();
-            let name = self.name.to_owned();
+            let lt = Local::now();
+            let tf = format!("{}{}{}", lt.year(), lt.month(), lt.day());
             let mut file_name = String::new();
+            let file_log = "File:";
 
             match cat {
                 Some(Category::YCH) => {
                     slot = self.slot.to_owned().unwrap();
-                    file_name = format!("{} - {}.arty",
-                                        name, slot);
+                    file_name = format!("{} - {} - {}.arty",
+                                        tf, name, slot);
+                    info!("YCH: {}, slot {}", name, slot);
+                    info!("{} \"{}\"", file_log, file_name);
                 }
                 Some(Category::Raffle) => {
                     slot = self.slot.to_owned().unwrap();
-                    let ticket = self.ticket.to_owned().unwrap();
+                    ticket = self.ticket.to_owned().unwrap();
 
-                    file_name = format!("{} - {} {}.arty",
-                                        name, ticket, slot);
+                    file_name = format!("{} - {} - {} {}.arty",
+                                        tf, name, ticket, slot);
+                    info!("Raffle: {}, ticket {}, slot {}", name, ticket, slot);
+                    info!("{} \"{}\"", file_log, file_name);
                 }
                 Some(Category::Request) => {
-                    file_name = format!("{} - {}.artr", c name);
+                    file_name = format!("{} - {}.artr", tf, self.name);
+                    info!("Request: {}", name);
+                    info!("{} \"{}\"", file_log, file_name);
                 }
                 Some(Category::Commission) => {
-                    file_name = format!("{}.artc", name);
+                    file_name = format!("{} - {}.artc", tf, name);
+                    info!("Commission: {}", name);
+                    info!("{} \"{}\"", file_log, file_name);
                 }
-                _ => {
-                    file_name = format!("{}.artm", name);
-                }
+                _ => {}
             }
 
             let mut file = OpenOptions::new().write(true)
@@ -232,7 +257,8 @@ impl Art {
                 .expect("Could not open file.");
 
             if let Err(err) = writeln!(file, "{}", format!("{}", json_string)) {
-                eprintln!("Could not write to file. {}", err);
+                let err_msg = format!("{}: {}", ERROR_MSG, err);
+                println!("{}", err_msg);
             }
         }
 
@@ -256,7 +282,8 @@ pub fn ych<S: Into<String>>(name: S, price: S, slot: S,
         .secure_id()
         .debug(debug)
         .write_file() {
-        println!("{}: {}", ERROR_MSG, err);
+        let err_msg = format!("{}: {}", ERROR_MSG, err);
+        println!("{}", err_msg);
         process::exit(EXIT_CODE);
     }
 }
@@ -276,7 +303,8 @@ pub fn comm<S: Into<String>>(name: S, price: S, desc: S,
         .secure_id()
         .debug(debug)
         .write_file() {
-        println!("{}: {}", ERROR_MSG, err);
+        let err_msg = format!("{}: {}", ERROR_MSG, err);
+        println!("{}", err_msg);
         process::exit(EXIT_CODE);
     }
 }
@@ -293,7 +321,8 @@ pub fn req<S: Into<String>>(name: S, desc: S, cust_name: S,
         .secure_id()
         .debug(debug)
         .write_file() {
-        println!("{}: {}", ERROR_MSG, err);
+        let err_msg = format!("{}: {}", ERROR_MSG, err);
+        println!("{}", err_msg);
         process::exit(EXIT_CODE);
     }
 }
@@ -308,7 +337,8 @@ pub fn raffle<S: Into<String>>(name: S, tickets: i32, slots: i32, debug: bool) w
         .raffle(choose_ticket, choose_slot)
         .debug(debug)
         .write_file() {
-        println!("{}: {}", ERROR_MSG, err);
+        let err_msg = format!("{}: {}", ERROR_MSG, err);
+        println!("{}", err_msg);
         process::exit(EXIT_CODE);
     }
 }
