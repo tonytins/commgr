@@ -1,13 +1,8 @@
 # Art Manager
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=master)](https://travis-ci.com/antonwilc0x/artm)
+
 A command line interface for storing art request, commission, and YCH information. The application is a work in progress but contribution is welcomed.
-
-| Branch | Status |
-| :---: | :---: |
-| Master | [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=master)](https://travis-ci.com/antonwilc0x/artm) |
-| Beta | [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=beta)](https://travis-ci.com/antonwilc0x/artm) |
-| Stable | [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=stable)](https://travis-ci.com/antonwilc0x/artm) |
-
 
 ## Usage
 

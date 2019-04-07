@@ -52,6 +52,9 @@ pub struct Art {
     pub description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub customer: Option<Customer>,
+    // Used during runtime
+    #[serde(skip)]
+    pub path: Option<String>,
     #[serde(skip)]
     pub debug: Option<bool>,
 }
@@ -103,6 +106,7 @@ impl Art {
             slot: None,
             price: None,
             description: None,
+            path: None,
             debug: None
         }
     }
