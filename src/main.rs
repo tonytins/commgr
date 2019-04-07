@@ -20,12 +20,12 @@ fn main() {
     let debug = matches.is_present(DEBUG_FLAG);
     let name = matches.value_of(NAME_OPT).unwrap();
 
-    let mut cust_name = ""; //matches.value_of(CUST_NAME_OPT).unwrap();
-    let mut desc= ""; // matches.value_of(DESC_OPT).unwrap();
-    let mut contact = ""; // matches.value_of(CONTACT_OPT).unwrap();
+    let mut cust_name = "";
+    let mut desc= "";
+    let mut contact = "";
     let mut slot = "";
-    let mut payment = ""; // matches.value_of(PAYMENT_OPT).unwrap();
-    let mut price = ""; // matches.value_of(PRICE_OPT).unwrap();
+    let mut payment = "";
+    let mut price = "";
     let mut reference = "";
 
     if !matches.is_present(RAFFLE_CMD) {

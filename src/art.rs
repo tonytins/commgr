@@ -54,6 +54,8 @@ pub struct Art {
     pub description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub customer: Option<Customer>,
+    #[serde(skip)]
+    pub debug: Option<bool>,
 }
 
 impl Default for Category {
@@ -102,15 +104,18 @@ impl Art {
             reference: None,
             slot: None,
             price: None,
-            description: None
+            description: None,
+            debug: None
         }
     }
 
     pub fn raffle<S: Into<String>>(mut self, ticket: S, slot: S) -> Art where S: Into<String> {
         let choosen_ticket = ticket.into();
         let choosen_slot = slot.into();
-        let mut hasher = Sha256::digest(format!("artm+{}{}{}",
-                                                self.name, choosen_ticket, choosen_slot).as_bytes());
+        let lt = Local::now();
+        let tf = format!("{}{}{}{}", lt.month(), lt.day(), lt.hour(), lt.minute());
+        let hasher = Sha256::digest(format!("artm:{}{}{}{}",
+                                            tf, self.name, choosen_ticket, choosen_slot).as_bytes());
 
         self.ticket = Some(choosen_ticket);
         self.slot = Some(choosen_slot);
@@ -120,8 +125,10 @@ impl Art {
     }
 
     pub fn secure_id(mut self) -> Art {
-        let hasher = Sha256::digest(format!("artm:{:?}{}",
-                                            self.category, self.name).as_bytes());
+        let lt = Local::now();
+        let tf = format!("{}{}{}{}", lt.month(), lt.day(), lt.hour(), lt.minute());
+        let hasher = Sha256::digest(format!("artm:{}{}",
+                                            tf, self.name.to_string()).as_bytes());
 
         self.id = format!("{:x}", hasher);
 
@@ -174,35 +181,48 @@ impl Art {
         self
     }
 
-    pub fn write_file(&self, debug: bool) -> Result<()> {
-        let json_string = serde_json::to_string_pretty(self)?;
+    pub fn debug(mut self, debug: bool) -> Art {
+        self.debug = Some(debug);
 
-        if debug == true {
+        self
+    }
+
+    pub fn write_file(&self) -> Result<()> {
+        let json_string = serde_json::to_string_pretty(self)?;
+        let is_debug = self.debug.unwrap();
+
+        if is_debug == true {
             println!("{}", json_string);
         }
         else
         {
             let cat = &self.category;
-            let mut slot = String::new();
+            let mut slot = "".to_string();
+            let mut cust = "".to_string();
             let name = self.name.to_owned();
             let mut file_name = String::new();
 
             match cat {
                 Some(Category::YCH) => {
                     slot = self.slot.to_owned().unwrap();
-                    file_name = format!("{} - {}.{}",
-                                        name, slot, ARTM_EXT);
+                    file_name = format!("{} - {}.arty",
+                                        name, slot);
                 }
                 Some(Category::Raffle) => {
                     slot = self.slot.to_owned().unwrap();
                     let ticket = self.ticket.to_owned().unwrap();
 
-                    file_name = format!("{} - {} {}.{}",
-                                        name, ticket, slot, ARTM_EXT);
+                    file_name = format!("{} - {} {}.arty",
+                                        name, ticket, slot);
+                }
+                Some(Category::Request) => {
+                    file_name = format!("{} - {}.artr", c name);
+                }
+                Some(Category::Commission) => {
+                    file_name = format!("{}.artc", name);
                 }
                 _ => {
-                    file_name = format!("{}.{}",
-                                        name, ARTM_EXT);
+                    file_name = format!("{}.artm", name);
                 }
             }
 
@@ -234,7 +254,8 @@ pub fn ych<S: Into<String>>(name: S, price: S, slot: S,
             .payment(pay)
             .contact(cont))
         .secure_id()
-        .write_file(debug) {
+        .debug(debug)
+        .write_file() {
         println!("{}: {}", ERROR_MSG, err);
         process::exit(EXIT_CODE);
     }
@@ -253,7 +274,8 @@ pub fn comm<S: Into<String>>(name: S, price: S, desc: S,
             .contact(cont))
         .description(desc)
         .secure_id()
-        .write_file(debug) {
+        .debug(debug)
+        .write_file() {
         println!("{}: {}", ERROR_MSG, err);
         process::exit(EXIT_CODE);
     }
@@ -269,7 +291,8 @@ pub fn req<S: Into<String>>(name: S, desc: S, cust_name: S,
             .contact(cont))
         .description(desc)
         .secure_id()
-        .write_file(debug) {
+        .debug(debug)
+        .write_file() {
         println!("{}: {}", ERROR_MSG, err);
         process::exit(EXIT_CODE);
     }
@@ -283,7 +306,8 @@ pub fn raffle<S: Into<String>>(name: S, tickets: i32, slots: i32, debug: bool) w
         .name(name)
         .category(Category::Raffle)
         .raffle(choose_ticket, choose_slot)
-        .write_file(debug) {
+        .debug(debug)
+        .write_file() {
         println!("{}: {}", ERROR_MSG, err);
         process::exit(EXIT_CODE);
     }
