@@ -5,6 +5,7 @@ It's recommended to use quotation marks for field values, unless it involves num
 There is no limitation on what the username and payment field has to be. As long as both provide a legit means of contact (email, FA, DA, ect..) and payment (paypal, crypto, bank, ect..), respectfully, it does not matter.
 
 ## Requests
+
 ``artm --art <art> --cont <contact> --name <name> --cust <customer> --desc <description>``
 
 Example: ``artm --cust "Lupe Jacobson" --cont "Kasey.Goyette18" --name "virtual" --desc "Lorem ipsum [...]"``
@@ -25,6 +26,7 @@ Example: ``artm --cust "Lupe Jacobson" --cont "Kasey.Goyette18" --name "virtual"
 ```
 
 ### Commissions
+
 ``artm --cont <contact> --name <name> --cust <customer> --desc <description> --pmt <payment> --price <price>``
 
 Example: ``artm --cust "Alberta Mann" --cont "Chanel_McKenzie7" --name "Tonga" --price "$43" --pmt "5458-2118-9194-8514" --desc "Lorem ipsum [...]"``
@@ -47,6 +49,7 @@ Example: ``artm --cust "Alberta Mann" --cont "Chanel_McKenzie7" --name "Tonga" -
 ```
 
 ## YCH
+
 ``artm --name <name> --cont <contact> --slot <slot> --cust <customer> --pmt <payment> --price <price> --ref <reference>``
 
 Example: ``artm --cust "Bessie Hettinger" --cont "Jack.Torphy75" --name "Synthesize" --slot 4 --price "$25" --payment "31VLNZXfcpoA68wPRuWSdrmT3jv5k" --ref "https://www.furaffinity.net/view/20700210/"``
