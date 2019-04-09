@@ -1,6 +1,6 @@
-// Copyright (c) Anthony Wilcox and contributors. All rights reserved.
-// Licensed under the GNU GPL v3 license. See LICENSE file in the project
-// root for full license information.
+use clap::{crate_authors, crate_description, crate_version, AppSettings, load_yaml, App, ArgMatches};
+use simplelog::*;
+use std::fs::File;
 
 // Argument names
 // =======================
@@ -29,3 +29,12 @@ pub const CMD_NOT_FOUND_MSG: &str = "Command not found.";
 // =======================
 
 pub const EXIT_CODE: i32 = 1;
+
+pub fn cli_arg() -> ArgMatches<'static> {
+    App::from_yaml(load_yaml!("artm.yml"))
+        .setting(AppSettings::VersionlessSubcommands)
+        .author(crate_authors!())
+        .about(crate_description!())
+        .version(crate_version!())
+        .get_matches()
+}

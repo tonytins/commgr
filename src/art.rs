@@ -1,17 +1,17 @@
 // Copyright (c) Anthony Wilcox and contributors. All rights reserved.
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
-use log::{info};
-use sha2::{Sha256, Digest};
 use chrono::prelude::*;
-use uuid::{Uuid};
-use crate::cmds::*;
+use log::info;
+use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
+use sha2::{Digest, Sha256};
 use std::fs::OpenOptions;
 use std::io::Write;
 use std::process;
-use rand::{Rng, thread_rng};
+use uuid::Uuid;
+use crate::cli::*;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Category {
@@ -19,7 +19,7 @@ pub enum Category {
     Commission,
     Request,
     Raffle,
-    Unknown
+    Unknown,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -60,7 +60,9 @@ pub struct Art {
 }
 
 impl Default for Category {
-    fn default() -> Self { Category::Unknown }
+    fn default() -> Self {
+        Category::Unknown
+    }
 }
 
 impl Customer {
@@ -68,31 +70,36 @@ impl Customer {
         Customer {
             name: "".to_string(),
             contact: "".to_string(),
-            payment: None
+            payment: None,
         }
     }
 
-    pub fn name<S: Into<String>>(mut self, name: S)
-        -> Customer where S: Into<String> {
+    pub fn name<S: Into<String>>(mut self, name: S) -> Customer
+    where
+        S: Into<String>,
+    {
         self.name = name.into();
         self
     }
 
-    pub fn contact<S: Into<String>>(mut self, cont: S)
-        -> Customer where S: Into<String> {
+    pub fn contact<S: Into<String>>(mut self, cont: S) -> Customer
+    where
+        S: Into<String>,
+    {
         self.contact = cont.into();
         self
     }
 
-    pub fn payment<S: Into<String>>(mut self, pay: S)
-        -> Customer where S: Into<String> {
+    pub fn payment<S: Into<String>>(mut self, pay: S) -> Customer
+    where
+        S: Into<String>,
+    {
         self.payment = Some(pay.into());
         self
     }
 }
 
 impl Art {
-
     pub fn new() -> Art {
         Art {
             id: Uuid::new_v4().to_string(),
@@ -107,17 +114,28 @@ impl Art {
             price: None,
             description: None,
             path: None,
-            debug: None
+            debug: None,
         }
     }
 
-    pub fn raffle<S: Into<String>>(mut self, ticket: S, slot: S) -> Art where S: Into<String> {
+    pub fn raffle<S: Into<String>>(mut self, ticket: S, slot: S) -> Art
+    where
+        S: Into<String>,
+    {
         let choosen_ticket = ticket.into();
         let choosen_slot = slot.into();
         let lt = Local::now();
-        let tf = format!("{}{}{}{}{}", lt.year(), lt.month(), lt.day(), lt.hour(), lt.minute());
-        let hasher = Sha256::digest(format!("artm:{}{}{}{}",
-                                            tf, self.name, choosen_ticket, choosen_slot).as_bytes());
+        let tf = format!(
+            "{}{}{}{}{}",
+            lt.year(),
+            lt.month(),
+            lt.day(),
+            lt.hour(),
+            lt.minute()
+        );
+        let hasher = Sha256::digest(
+            format!("artm:{}{}{}{}", tf, self.name, choosen_ticket, choosen_slot).as_bytes(),
+        );
 
         self.ticket = Some(choosen_ticket);
         self.slot = Some(choosen_slot);
@@ -129,8 +147,7 @@ impl Art {
     pub fn secure_id(mut self) -> Art {
         let lt = Local::now();
         let tf = format!("{}{}{}{}", lt.month(), lt.day(), lt.hour(), lt.minute());
-        let hasher = Sha256::digest(format!("artm:{}{}",
-                                            tf, self.name.to_string()).as_bytes());
+        let hasher = Sha256::digest(format!("artm:{}{}", tf, self.name.to_string()).as_bytes());
 
         self.id = format!("{:x}", hasher);
 
@@ -142,32 +159,42 @@ impl Art {
         self
     }
 
-    pub fn name<S: Into<String>>(mut self, name: S)
-        -> Art where S: Into<String> {
+    pub fn name<S: Into<String>>(mut self, name: S) -> Art
+    where
+        S: Into<String>,
+    {
         self.name = name.into();
         self
     }
 
-    pub fn price<S: Into<String>>(mut self, price: S)
-        -> Art where S: Into<String> {
+    pub fn price<S: Into<String>>(mut self, price: S) -> Art
+    where
+        S: Into<String>,
+    {
         self.price = Some(price.into());
         self
     }
 
-    pub fn description<S: Into<String>>(mut self, desc: S)
-        -> Art where S: Into<String> {
+    pub fn description<S: Into<String>>(mut self, desc: S) -> Art
+    where
+        S: Into<String>,
+    {
         self.description = Some(desc.into());
         self
     }
 
-    pub fn slot<S: Into<String>>(mut self, slot: S)
-                                        -> Art where S: Into<String> {
+    pub fn slot<S: Into<String>>(mut self, slot: S) -> Art
+    where
+        S: Into<String>,
+    {
         self.slot = Some(slot.into());
         self
     }
 
-    pub fn reference<S: Into<String>>(mut self, reference: S)
-                                        -> Art where S: Into<String> {
+    pub fn reference<S: Into<String>>(mut self, reference: S) -> Art
+    where
+        S: Into<String>,
+    {
         self.reference = Some(reference.into());
         self
     }
@@ -217,9 +244,7 @@ impl Art {
             }
 
             println!("{}", json_string);
-        }
-        else
-        {
+        } else {
             let lt = Local::now();
             let tf = format!("{}{}{}", lt.year(), lt.month(), lt.day());
             let mut file_name = String::new();
@@ -228,8 +253,7 @@ impl Art {
             match cat {
                 Some(Category::YCH) => {
                     slot = self.slot.to_owned().unwrap();
-                    file_name = format!("{} - {} - {}.arty",
-                                        tf, name, slot);
+                    file_name = format!("{} - {} - {}.arty", tf, name, slot);
                     info!("YCH: {}, slot {}", name, slot);
                     info!("{} \"{}\"", file_log, file_name);
                 }
@@ -237,8 +261,7 @@ impl Art {
                     slot = self.slot.to_owned().unwrap();
                     ticket = self.ticket.to_owned().unwrap();
 
-                    file_name = format!("{} - {} - {} {}.arty",
-                                        tf, name, ticket, slot);
+                    file_name = format!("{} - {} - {} {}.arty", tf, name, ticket, slot);
                     info!("Raffle: {}, ticket {}, slot {}", name, ticket, slot);
                     info!("{} \"{}\"", file_log, file_name);
                 }
@@ -255,7 +278,8 @@ impl Art {
                 _ => {}
             }
 
-            let mut file = OpenOptions::new().write(true)
+            let mut file = OpenOptions::new()
+                .write(true)
                 .create_new(true)
                 .open(file_name)
                 .expect("Could not open file.");
@@ -270,68 +294,78 @@ impl Art {
     }
 }
 
-pub fn ych<S: Into<String>>(name: S, price: S, slot: S,
-                            reference: S, cust_name: S,  pay: S,
-                            cont: S, debug: bool) where S: Into<String> {
+pub fn ych<S: Into<String>>(
+    name: S,
+    price: S,
+    slot: S,
+    reference: S,
+    cust_name: S,
+    pay: S,
+    cont: S,
+    debug: bool,
+) where
+    S: Into<String>,
+{
     if let Err(err) = Art::new()
         .price(price)
         .name(name)
         .category(Category::YCH)
         .slot(slot)
         .reference(reference)
-        .customer(Customer::new()
-            .name(cust_name)
-            .payment(pay)
-            .contact(cont))
+        .customer(Customer::new().name(cust_name).payment(pay).contact(cont))
         .secure_id()
         .debug(debug)
-        .write_file() {
+        .write_file()
+    {
         let err_msg = format!("{}: {}", ERROR_MSG, err);
         println!("{}", err_msg);
         process::exit(EXIT_CODE);
     }
 }
 
-pub fn comm<S: Into<String>>(name: S, price: S, desc: S,
-                             cust_name: S, pay: S,
-                             cont: S, debug: bool) where S: Into<String> {
+pub fn comm<S: Into<String>>(name: S, price: S, desc: S, cust_name: S, pay: S, cont: S, debug: bool)
+where
+    S: Into<String>,
+{
     if let Err(err) = Art::new()
         .price(price)
         .name(name)
         .category(Category::Commission)
-        .customer(Customer::new()
-            .name(cust_name)
-            .payment(pay)
-            .contact(cont))
+        .customer(Customer::new().name(cust_name).payment(pay).contact(cont))
         .description(desc)
         .secure_id()
         .debug(debug)
-        .write_file() {
+        .write_file()
+    {
         let err_msg = format!("{}: {}", ERROR_MSG, err);
         println!("{}", err_msg);
         process::exit(EXIT_CODE);
     }
 }
 
-pub fn req<S: Into<String>>(name: S, desc: S, cust_name: S,
-                            cont: S, debug: bool) where S: Into<String> {
+pub fn req<S: Into<String>>(name: S, desc: S, cust_name: S, cont: S, debug: bool)
+where
+    S: Into<String>,
+{
     if let Err(err) = Art::new()
         .name(name)
         .category(Category::Request)
-        .customer(Customer::new()
-            .name(cust_name)
-            .contact(cont))
+        .customer(Customer::new().name(cust_name).contact(cont))
         .description(desc)
         .secure_id()
         .debug(debug)
-        .write_file() {
+        .write_file()
+    {
         let err_msg = format!("{}: {}", ERROR_MSG, err);
         println!("{}", err_msg);
         process::exit(EXIT_CODE);
     }
 }
 
-pub fn raffle<S: Into<String>>(name: S, tickets: i32, slots: i32, debug: bool) where S: Into<String> {
+pub fn raffle<S: Into<String>>(name: S, tickets: i32, slots: i32, debug: bool)
+where
+    S: Into<String>,
+{
     let choose_ticket = format!("{}", thread_rng().gen_range(1, tickets));
     let choose_slot = format!("{}", thread_rng().gen_range(1, slots));
 
@@ -340,7 +374,8 @@ pub fn raffle<S: Into<String>>(name: S, tickets: i32, slots: i32, debug: bool) w
         .category(Category::Raffle)
         .raffle(choose_ticket, choose_slot)
         .debug(debug)
-        .write_file() {
+        .write_file()
+    {
         let err_msg = format!("{}: {}", ERROR_MSG, err);
         println!("{}", err_msg);
         process::exit(EXIT_CODE);

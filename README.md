@@ -13,6 +13,9 @@ A command line interface for storing art request, commission, and YCH informatio
 ### Prerequisites
 
 - Rust 1.32+
+- Diesel SQLite Cli
+
+It's recommended for Windows users to use the SQLite bundle option: ``cargo install diesel_cli --no-default-features --features "sqlite-bundled"``.
 
 ### Platforms
 
