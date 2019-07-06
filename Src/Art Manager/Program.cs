@@ -13,11 +13,6 @@ namespace Art_Manager
             var cli = Cli.Parse<CliArgs>(args);
             Cli.Execute<CliCmd>(args);
 
-            if (cli.Payment != string.Empty)
-            {
-
-            }
-
             Console.WriteLine("Hello World!");
         }
     }
