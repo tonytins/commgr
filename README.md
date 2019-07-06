@@ -2,7 +2,7 @@
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X5LDU7)
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Build Status](https://travis-ci.com/antonwilc0x/artm.svg?branch=master)](https://travis-ci.com/antonwilc0x/artm)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 [Usage](Usage.md) | [To-do](TODO.md)
 
@@ -12,7 +12,7 @@ A command line interface for storing art request, commission, and YCH informatio
 
 ### Prerequisites
 
-- Rust 1.32+
+- .NET Core 3.x SDK
 
 ### Platforms
 
