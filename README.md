@@ -16,7 +16,4 @@ A command line interface for storing art request, commission, and YCH informatio
 
 ### Platforms
 
-- Linux 2.16.8+
-- macOS 10.7+
-- Windows 7+
-    - Windows 10 October 2018 Update or above recommended
+See [Platforms.md](Platforms.md)

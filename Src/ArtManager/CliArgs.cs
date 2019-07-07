@@ -3,7 +3,7 @@
 // root for full license information.
 using EntryPoint;
 
-namespace Art_Manager
+namespace ArtManager
 {
     class CliArgs : BaseCliArguments
     {
@@ -12,22 +12,22 @@ namespace Art_Manager
         [Option("debug", 'D')]
         public bool Debug { get; set; }
 
-        [Option("name", 'n')]
+        [OptionParameter("name", 'n')]
         public string Name { get; set; }
 
-        [Option("desc", 'd')]
+        [OptionParameter("desc", 'd')]
         public string Description { get; set; }
 
-        [Option("cont", 'c')]
+        [OptionParameter("cont", 'c')]
         public string Customer { get; set; }
 
-        [Option("price", 'p')]
+        [OptionParameter("price", 'p')]
         public decimal Price { get; set; }
 
-        [Option("payment", 'P')]
+        [OptionParameter("payment", 'P')]
         public string Payment { get; set; }
 
-        [Option("reference", 'r')]
+        [OptionParameter("reference", 'r')]
         public string Reference { get; set; }
     }
 }
