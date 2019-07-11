@@ -1,5 +1,9 @@
 # Change log
 
+## 0.3.1 (WIP)
+
+- Rewritten in C# using .NET Core. Making it just as portable to develop for as it's former Rust counterpart.
+
 ## 0.3.0
 
 - ``.art[ycr]`` replaces the former ``.artm[ycr]`` format.

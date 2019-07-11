@@ -6,14 +6,12 @@
 
 [Usage](Usage.md) | [To-do](TODO.md)
 
-A command line interface for storing art request, commission, and YCH information. The application is a work in progress but contribution is welcomed.
+A command line application for storing art request, commission, and YCH information. The application is a work in progress but contribution is welcomed.
 
-## Requirements
-
-### Prerequisites
+## Prerequisites
 
 - .NET Core 3.x SDK
 
-### Platforms
+## Platforms
 
-See [Platforms.md](Platforms.md)
+See the [platforms](Docs/Platforms.md) page.
