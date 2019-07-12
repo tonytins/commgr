@@ -10,8 +10,11 @@ A command line application for storing art request, commission, and YCH informat
 
 ## Prerequisites
 
-- [.NET Core 3.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
-  - Preview 6 or above   
+- [.NET Core 2.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.1)
+- IDEs or Text Editors
+  - Rider
+  - VSCode 
+  - VS2019 (recommended)
 
 ## Platforms
 
