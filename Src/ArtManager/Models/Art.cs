@@ -2,6 +2,7 @@
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
 using System;
+using LiteDB;
 
 namespace ArtManager.Models
 {
@@ -18,7 +19,11 @@ namespace ArtManager.Models
 
         public Guid Id { get; } = Guid.NewGuid();
         public DateTime Date { get; } = DateTime.Now;
+
+        // Only used for data export
+        [BsonIgnore]
         public string Version { get; } = "0.1.1";
+
         public string Name { get; set; }
         public int? Ticket { get; set; }
         public int? Slot { get; set; }
