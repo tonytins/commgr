@@ -3,10 +3,11 @@
 // root for full license information.
 using System;
 
-namespace ArtManager
+namespace ArtManager.Models
 {
     class Customer
     {
+
         public string Name { get; set; }
         public string Contact { get; set; }
         public string Payment { get; set; }
@@ -14,6 +15,7 @@ namespace ArtManager
 
     class Art
     {
+
         public Guid Id { get; } = Guid.NewGuid();
         public DateTime Date { get; } = DateTime.Now;
         public string Version { get; } = "0.1.1";

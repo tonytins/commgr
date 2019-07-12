@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		..\Platforms.md = ..\Platforms.md
 		..\README.md = ..\README.md
+		..\docs\Usage.md = ..\docs\Usage.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtManager", "ArtManager\ArtManager.csproj", "{805F7833-D1E2-44ED-A0CA-1686AA6EEC5D}"

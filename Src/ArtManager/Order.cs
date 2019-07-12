@@ -2,10 +2,11 @@
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
 using System;
-using System.IO;
-using System.Text.Json.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using ArtManager.Models;
+using EntryPoint;
+using LiteDB;
+using Newtonsoft.Json;
 
 namespace ArtManager
 {
@@ -13,41 +14,75 @@ namespace ArtManager
     {
         Art Art { get; set; }
 
+        readonly List<Art> _arts = new List<Art>();
+
+        public Order() { }
+
         public Order(Art order)
         {
             Art = order;
         }
 
-        public string JsonString
-        {
-            get
-            {
-                var op = new JsonSerializerOptions()
-                {
-                    IgnoreNullValues = true,
-                    WriteIndented = true,
-                };
-
-                return JsonSerializer.ToString(Art, op);
-            }
-        }
-
-        public async Task JsonFileAsync(string path)
+        public void DBInsert()
         {
             try
             {
-                if (!File.Exists(path))
+                using (var db = new LiteDatabase(ArtmConsts.DBFILE))
                 {
-                    var encodedTxt = Encoding.Unicode.GetBytes(JsonString);
-
-                    using var fstream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
-
-                    await fstream.WriteAsync(encodedTxt, 0, encodedTxt.Length);
+                    var art = db.GetCollection<Art>(ArtmConsts.DBCOL);
+                    art.Insert(Art);
                 }
             }
-            catch (IOException ex)
+            catch (Exception err)
             {
-                throw new IOException(ex.Message);
+                Console.WriteLine(err.Message);
+            }
+        }
+
+        public void DBRaffle(string[] args)
+        {
+            var cli = Cli.Parse<RaffleArgs>(args);
+            var rand = new Random();
+            var tickets = rand.Next(cli.Tickets);
+            var slots = rand.Next(cli.Slots);
+
+            if (cli.Debug)
+            {
+
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public void DbListAll()
+        {
+            try
+            {
+                using (var db = new LiteDatabase(ArtmConsts.DBFILE))
+                {
+                    var art = db.GetCollection<Art>(ArtmConsts.DBCOL);
+                    art.EnsureIndex(x => x.Id);
+                    var query = art.Include(x => x.Id)
+                        .Include(x => x.Custmer)
+                        .Include(x => x.Name)
+                        .FindAll();
+
+                    foreach (var q in query)
+                        _arts.Add(q);
+
+                    var op = new JsonSerializerSettings()
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                    };
+                    var json = JsonConvert.SerializeObject(_arts, Formatting.Indented, op);
+                    Console.WriteLine(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
