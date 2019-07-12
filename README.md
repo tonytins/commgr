@@ -4,13 +4,14 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-[Usage](Usage.md) | [To-do](TODO.md)
+[Usage](docs/Usage.md) | [To-do](TODO.md)
 
 A command line application for storing art request, commission, and YCH information. The application is a work in progress but contribution is welcomed.
 
 ## Prerequisites
 
-- .NET Core 3.x SDK
+- [.NET Core 3.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+  - Preview 6 or above   
 
 ## Platforms
 
