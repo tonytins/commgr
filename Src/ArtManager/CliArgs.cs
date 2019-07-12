@@ -7,7 +7,7 @@ namespace ArtManager
 {
     class BaseArgs : BaseCliArguments
     {
-        public BaseArgs() : base(ArtmConsts.PROGNAME) { }
+        public BaseArgs() : base("Art Manager") { }
 
         [Option("debug", 'D')]
         public bool Debug { get; set; }

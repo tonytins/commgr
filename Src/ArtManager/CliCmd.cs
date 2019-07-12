@@ -2,15 +2,18 @@
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
 using System;
+using System.Threading.Tasks;
 using EntryPoint;
 
 namespace ArtManager
 {
     class CliCmd : BaseCliCommands
     {
+        readonly string _dbDir = $"{Environment.CurrentDirectory}\\db";
+
         [DefaultCommand]
         [Command("req")]
-        public void Request(string[] args)
+        public async Task Request(string[] args)
         {
             var cli = Cli.Parse<BaseArgs>(args);
             var art = new Art()
@@ -25,14 +28,11 @@ namespace ArtManager
             };
             var order = new Order(art);
 
-            if (cli.Debug)
-            {
-                Console.WriteLine(order.ToJson);
-            }
+            await order.JsonFileAsync($"{_dbDir}\\{cli.Name}.arty");
         }
 
         [Command("com")]
-        public void Commission(string[] args)
+        public async Task Commission(string[] args)
         {
             var cli = Cli.Parse<PayArgs>(args);
             var art = new Art()
@@ -49,14 +49,11 @@ namespace ArtManager
             };
             var order = new Order(art);
 
-            if (cli.Debug)
-            {
-                Console.WriteLine(order.ToJson);
-            }
+            await order.JsonFileAsync($"{_dbDir}\\{cli.Name}.artc");
         }
 
         [Command("ych")]
-        public void YCH(string[] args)
+        public async Task YCH(string[] args)
         {
             var cli = Cli.Parse<YchArgs>(args);
             var art = new Art()
@@ -74,14 +71,12 @@ namespace ArtManager
             };
             var order = new Order(art);
 
-            if (cli.Debug)
-            {
-                Console.WriteLine(order.ToJson);
-            }
+            await order.JsonFileAsync($"{_dbDir}\\{cli.Name}-{cli.Ticket}-{cli.Slot}.arty");
         }
 
+        /*
         [Command("raf")]
-        public void Raffle(string[] args)
+        public async Task Raffle(string[] args)
         {
             var cli = Cli.Parse<YchArgs>(args);
             var rand = new Random();
@@ -100,10 +95,8 @@ namespace ArtManager
             };
             var order = new Order(art);
 
-            if (cli.Debug)
-            {
-                Console.WriteLine(order.ToJson);
-            }
+            await order.JsonFileAsync($"{Environment.CurrentDirectory}\\{cli.Name}.arty");
         }
+        */
     }
 }
