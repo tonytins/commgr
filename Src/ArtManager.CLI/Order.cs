@@ -3,16 +3,19 @@
 // root for full license information.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using ArtManager.Models;
 using EntryPoint;
 using LiteDB;
 using Newtonsoft.Json;
 
-namespace ArtManager
+namespace ArtManager.CLI
 {
     class Order
     {
         Art Art { get; set; }
+
+        public bool IsDebug { get; set; }
 
         readonly List<Art> _arts = new List<Art>();
 
@@ -35,7 +38,7 @@ namespace ArtManager
             }
             catch (Exception err)
             {
-                Console.WriteLine(err.Message);
+                throw new Exception(err.Message);
             }
         }
 
@@ -46,7 +49,7 @@ namespace ArtManager
             var tickets = rand.Next(cli.Tickets);
             var slots = rand.Next(cli.Slots);
 
-            if (cli.Debug)
+            if (IsDebug)
             {
 
             }
@@ -63,8 +66,8 @@ namespace ArtManager
                 using (var db = new LiteDatabase(ArtmConsts.DBFILE))
                 {
                     var art = db.GetCollection<Art>(ArtmConsts.DBCOL);
-                    art.EnsureIndex(x => x.Id);
-                    var query = art.Include(x => x.Id)
+                    art.EnsureIndex(x => x.Hash);
+                    var query = art.Include(x => x.Hash)
                         .Include(x => x.Custmer)
                         .Include(x => x.Name)
                         .FindAll();
@@ -77,12 +80,16 @@ namespace ArtManager
                         NullValueHandling = NullValueHandling.Ignore,
                     };
                     var json = JsonConvert.SerializeObject(_arts, Formatting.Indented, op);
-                    Console.WriteLine(json);
+
+                    if (IsDebug)
+                        Console.WriteLine(json);
+                    else if (Debugger.IsAttached)
+                        Debug.WriteLine(json);
                 }
             }
-            catch (Exception ex)
+            catch (Exception err)
             {
-                Console.WriteLine(ex.Message);
+                throw new Exception(err.Message);
             }
         }
     }

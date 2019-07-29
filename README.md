@@ -19,3 +19,5 @@ A command line application for storing art request, commission, and YCH informat
 ## Platforms
 
 See the [platforms](Docs/Platforms.md) page.
+
+## Life Cycle

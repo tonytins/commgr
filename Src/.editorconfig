@@ -12,10 +12,6 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size  = 2
 
-[*.{fs,fsx,fsi}]
-indent_style = space
-indent_size  = 4
-
 # VB and C# files
 [*.{vb,cs}]
 # avoid this. unless absolutely necessary

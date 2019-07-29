@@ -1,0 +1,10 @@
+{
+ "profiles": {
+  "ArtManager": {
+   "commandName": "Project"
+  },
+  "Docker": {
+   "commandName": "Docker"
+  }
+ }
+}

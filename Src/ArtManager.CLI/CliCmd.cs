@@ -2,11 +2,12 @@
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
 using System;
+using System.Diagnostics;
 using System.IO;
 using ArtManager.Models;
 using EntryPoint;
 
-namespace ArtManager
+namespace ArtManager.CLI
 {
     class CliCmd : BaseCliCommands
     {
@@ -37,6 +38,7 @@ namespace ArtManager
                     Name = cli.Customer,
                     Contact = cli.Contact,
                 },
+                Catagory = Catagory.Request,
                 Description = cli.Description,
             };
             var order = new Order(art);
@@ -59,6 +61,7 @@ namespace ArtManager
                     Contact = cli.Contact,
                     Payment = cli.Payment,
                 },
+                Catagory = Catagory.Commission,
                 Price = cli.Price,
                 Description = cli.Description,
             };
@@ -82,6 +85,7 @@ namespace ArtManager
                     Contact = cli.Contact,
                     Payment = cli.Payment,
                 },
+                Catagory = Catagory.YCH,
                 Price = cli.Price,
                 Slot = cli.Slot,
                 Ticket = cli.Ticket
@@ -89,7 +93,7 @@ namespace ArtManager
             var order = new Order(art);
             order.DBInsert();
 
-            if (cli.Debug)
+            if (cli.Debug || Debugger.IsAttached)
                 order.DbListAll();
         }
 
@@ -99,6 +103,15 @@ namespace ArtManager
         {
             var order = new Order();
             order.DBRaffle(args);
+        }
+
+        public override void OnHelpInvoked(string helpText)
+        {
+            var monero = "44xZM7FSdJ9TpYK99Y2e4JYyprRWR3fKxJWsw4jEFL6CWtWQG35qWAPDTPDuAGy1v74bL2arKP2Eq7GVPfsWTZVs7MhKhf4";
+            var about = "A command line application used for storing request, commission, and YCH information.";
+            Console.WriteLine($"## About ##{Environment.NewLine}{about}{Environment.NewLine}");
+            Console.WriteLine($"{Environment.NewLine}## Donate ##{Environment.NewLine}Ko-Fi: ko-fi.com/antonwilc0x{Environment.NewLine}Monero: {monero}");
+            Console.WriteLine($"{Environment.NewLine}{helpText}");
         }
     }
 }

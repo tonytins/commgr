@@ -3,7 +3,7 @@
 // root for full license information.
 using EntryPoint;
 
-namespace ArtManager
+namespace ArtManager.CLI
 {
     class GlobalArgs : BaseCliArguments
     {
