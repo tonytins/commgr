@@ -3,15 +3,19 @@
 // root for full license information.
 using EntryPoint;
 
-namespace ArtManager
+namespace ArtManager.CLI
 {
-    class BaseArgs : BaseCliArguments
+    class GlobalArgs : BaseCliArguments
     {
-        public BaseArgs() : base("Art Manager") { }
+        public GlobalArgs() : base(ArtmConsts.APPNAME) { }
 
         [Option("debug", 'D')]
         public bool Debug { get; set; }
 
+    }
+
+    class BaseArgs : GlobalArgs
+    {
         /// <summary>
         /// Artwork name
         /// </summary>
@@ -49,12 +53,37 @@ namespace ArtManager
     class YchArgs : PayArgs
     {
         [Required]
-        [OptionParameter("ticket", 't')]
+        [OptionParameter("tickets", 't')]
         public int Ticket { get; set; }
 
         [Required]
-        [OptionParameter("slot", 's')]
+        [OptionParameter("slots", 's')]
         public int Slot { get; set; }
+    }
+
+    class RaffleArgs : GlobalArgs
+    {
+
+        /// <summary>
+        /// Artwork name
+        /// </summary>
+        [Required]
+        [OptionParameter("name", 'n')]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Maximum number of slots
+        /// </summary>
+        [Required]
+        [OptionParameter("tickets", 't')]
+        public int Tickets { get; set; }
+
+        /// <summary>
+        /// Maximum number of slots
+        /// </summary>
+        [Required]
+        [OptionParameter("slots", 's')]
+        public int Slots { get; set; }
     }
 
     /// <summary>
