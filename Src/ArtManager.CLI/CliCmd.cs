@@ -11,14 +11,17 @@ namespace ArtManager.CLI
 {
     class CliCmd : BaseCliCommands
     {
+        Art _art;
+        Order _order;
+
         [DefaultCommand]
         [Command("list")]
         public void ListAll(string[] args)
         {
             if (File.Exists(ArtmConsts.DBFILE))
             {
-                var order = new Order();
-                order.DbListAll();
+                _order = new Order();
+                _order.DbListAll();
             }
             else
             {
@@ -30,7 +33,7 @@ namespace ArtManager.CLI
         public void Request(string[] args)
         {
             var cli = Cli.Parse<BaseArgs>(args);
-            var art = new Art()
+            _art = new Art()
             {
                 Name = cli.Name,
                 Custmer = new Customer
@@ -38,21 +41,20 @@ namespace ArtManager.CLI
                     Name = cli.Customer,
                     Contact = cli.Contact,
                 },
-                Catagory = Catagory.Request,
                 Description = cli.Description,
             };
-            var order = new Order(art);
-            order.DBInsert();
+            _order = new Order(_art);
+            _order.DBInsert();
 
             if (cli.Debug)
-                order.DbListAll();
+                _order.DbListAll();
         }
 
         [Command("com")]
         public void Commission(string[] args)
         {
             var cli = Cli.Parse<PayArgs>(args);
-            var art = new Art()
+            _art = new Art()
             {
                 Name = cli.Name,
                 Custmer = new Customer
@@ -61,22 +63,21 @@ namespace ArtManager.CLI
                     Contact = cli.Contact,
                     Payment = cli.Payment,
                 },
-                Catagory = Catagory.Commission,
                 Price = cli.Price,
                 Description = cli.Description,
             };
-            var order = new Order(art);
-            order.DBInsert();
+            _order = new Order(_art);
+            _order.DBInsert();
 
             if (cli.Debug)
-                order.DbListAll();
+                _order.DbListAll();
         }
 
         [Command("ych")]
         public void YCH(string[] args)
         {
             var cli = Cli.Parse<YchArgs>(args);
-            var art = new Art()
+            _art = new Art()
             {
                 Name = cli.Name,
                 Custmer = new Customer
@@ -85,24 +86,22 @@ namespace ArtManager.CLI
                     Contact = cli.Contact,
                     Payment = cli.Payment,
                 },
-                Catagory = Catagory.YCH,
                 Price = cli.Price,
                 Slot = cli.Slot,
                 Ticket = cli.Ticket
             };
-            var order = new Order(art);
-            order.DBInsert();
+            _order = new Order(_art);
+            _order.DBInsert();
 
             if (cli.Debug || Debugger.IsAttached)
-                order.DbListAll();
+                _order.DbListAll();
         }
-
 
         [Command("raf")]
         public void Raffle(string[] args)
         {
-            var order = new Order();
-            order.DBRaffle(args);
+            _order = new Order();
+            _order.DBRaffle(args);
         }
 
         public override void OnHelpInvoked(string helpText)

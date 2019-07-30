@@ -4,8 +4,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using LiteDB;
 using Newtonsoft.Json;
@@ -18,7 +16,7 @@ namespace ArtManager.Models
         Request,
         Commission,
         YCH,
-        Raffle
+        Raffle,
     }
     public class Customer
     {
@@ -34,22 +32,29 @@ namespace ArtManager.Models
         {
             get
             {
-                var sha = SHA256.Create();
-                var toBytes = Encoding.Unicode.GetBytes($"{Timestamp}{Name}{Custmer.Name}");
-                var computeHash = sha.ComputeHash(toBytes);
-                sha.Dispose();
-                return Convert.ToBase64String(computeHash);
+                return ArtUtils.CalculateHash(this);
             }
         }
-        public DateTime Timestamp { get; } = DateTime.Now;
+        public DateTime Timestamp { get; internal set; } = DateTime.Now;
 
         // Only used in data export
         [BsonIgnore]
         public string Version { get; } = "0.2";
 
-        // Ignored since 0.1.1
+        // Ignored in Json export since 0.1.1
         [JsonIgnore]
-        public Catagory Catagory { get; set; } = Catagory.Request;
+        public Catagory Catagory
+        {
+            get
+            {
+                if (Slot.HasValue && Ticket.HasValue)
+                    return Catagory.YCH;
+                if (Description != string.Empty && Price.HasValue)
+                    return Catagory.Commission;
+                else
+                    return Catagory.Request;
+            }
+        }
 
         public string Name { get; set; }
         public int? Ticket { get; set; }
@@ -61,7 +66,7 @@ namespace ArtManager.Models
 
         public void Save(string dir, string filename)
         {
-            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            var json = ArtUtils.AsJson(this);
             var path = Path.Combine(dir, $"{filename}.artm");
 
             try
@@ -74,9 +79,13 @@ namespace ArtManager.Models
                 if (Debugger.IsAttached)
                     Debug.WriteLine(json);
             }
-            catch
+            catch (IOException err)
             {
-                throw new IOException();
+                throw new IOException(err.Message);
+            }
+            catch (Exception err)
+            {
+                throw new Exception(err.Message);
             }
         }
 
@@ -89,7 +98,7 @@ namespace ArtManager.Models
         /// <returns></returns>
         public async Task SaveAsync(string dir, string filename)
         {
-            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            var json = ArtUtils.AsJson(this);
             var path = Path.Combine(dir, $"{filename}.artm");
 
             try
@@ -102,9 +111,13 @@ namespace ArtManager.Models
                 if (Debugger.IsAttached)
                     Debug.WriteLine(json);
             }
-            catch
+            catch (IOException err)
             {
-                throw new IOException();
+                throw new IOException(err.Message);
+            }
+            catch (Exception err)
+            {
+                throw new Exception(err.Message);
             }
         }
     }

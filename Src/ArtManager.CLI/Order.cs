@@ -5,9 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ArtManager.Models;
-using EntryPoint;
 using LiteDB;
-using Newtonsoft.Json;
 
 namespace ArtManager.CLI
 {
@@ -44,10 +42,12 @@ namespace ArtManager.CLI
 
         public void DBRaffle(string[] args)
         {
+            /*
             var cli = Cli.Parse<RaffleArgs>(args);
             var rand = new Random();
             var tickets = rand.Next(cli.Tickets);
             var slots = rand.Next(cli.Slots);
+            */
 
             if (IsDebug)
             {
@@ -75,11 +75,7 @@ namespace ArtManager.CLI
                     foreach (var q in query)
                         _arts.Add(q);
 
-                    var op = new JsonSerializerSettings()
-                    {
-                        NullValueHandling = NullValueHandling.Ignore,
-                    };
-                    var json = JsonConvert.SerializeObject(_arts, Formatting.Indented, op);
+                    var json = ArtUtils.AsJson(_arts);
 
                     if (IsDebug)
                         Console.WriteLine(json);

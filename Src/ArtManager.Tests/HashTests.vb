@@ -3,9 +3,11 @@ Imports Xunit
 
 Namespace ArtManager.Tests
 
-    Public Class StarterTests
+    Public Class HashTests
 
-        Const VERSION As String = "0.2"
+        Const VERSION = "0.2"
+        Const ORDER_TYPE = "order type:"
+
         Dim _art As Art
 
         <Theory>
@@ -23,10 +25,10 @@ Namespace ArtManager.Tests
 
             VersionCheck(_art.Version, VERSION)
 
-            Assert.Equal(_art.Name, name)
-            Assert.Equal(_art.Custmer.Name, cust)
-            Assert.Equal(_art.Description, desc)
-            Assert.Equal(_art.Custmer.Contact, cont)
+            Assert.Equal(_art.Hash, ArtUtils.SearchHash(name, cust, cont))
+
+            Debug.WriteLine($"{Environment.NewLine}{_art.Name}, {ORDER_TYPE} {_art.Catagory}")
+            Debug.WriteLine(ArtUtils.AsJson(_art))
 
         End Sub
 
@@ -49,17 +51,15 @@ Namespace ArtManager.Tests
 
             VersionCheck(_art.Version, VERSION)
 
-            Assert.Equal(_art.Name, name)
-            Assert.Equal(_art.Custmer.Name, cust)
-            Assert.Equal(_art.Description, desc)
-            Assert.Equal(_art.Custmer.Contact, cont)
-            Assert.Equal(_art.Custmer.Payment, payment)
-            Assert.Equal(_art.Price, price)
+            Assert.Equal(_art.Hash, ArtUtils.SearchHash(name, price, cust, cont))
+            Debug.WriteLine($"{Environment.NewLine}{_art.Name}, {ORDER_TYPE} {_art.Catagory}")
+            Debug.WriteLine(ArtUtils.AsJson(_art))
 
         End Sub
 
         <Theory>
-        <InlineData("Synthesize", "Bessie Hettinger", "Jack.Torphy75", "31VLNZXfcpoA68wPRuWSdrmT3jv5k", 25, 1, 4)>
+        <InlineData("Synthesize", "Bessie Hettinger", "Jack.Torphy75", "31VLNZXfcpoA68wPRuWSdrmT3jv5k",
+                    25, 1, 4)>
         Sub TestYCH(name As String, cust As String, cont As String, payment As String,
                     price As Decimal, ticket As Integer, slot As Integer)
 
@@ -77,13 +77,9 @@ Namespace ArtManager.Tests
 
             VersionCheck(_art.Version, VERSION)
 
-            Assert.Equal(_art.Name, name)
-            Assert.Equal(_art.Custmer.Name, cust)
-            Assert.Equal(_art.Custmer.Contact, cont)
-            Assert.Equal(_art.Custmer.Payment, payment)
-            Assert.Equal(_art.Ticket, ticket)
-            Assert.Equal(_art.Slot, slot)
-            Assert.Equal(_art.Price, price)
+            Assert.Equal(_art.Hash, ArtUtils.SearchHash(name, price, ticket, slot))
+            Debug.WriteLine($"{Environment.NewLine}{_art.Name}, {ORDER_TYPE} {_art.Catagory}")
+            Debug.WriteLine(ArtUtils.AsJson(_art))
 
         End Sub
 
