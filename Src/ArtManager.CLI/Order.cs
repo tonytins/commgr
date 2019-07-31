@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ArtManager.Models;
+using EntryPoint;
 using LiteDB;
 
 namespace ArtManager.CLI
@@ -42,12 +43,13 @@ namespace ArtManager.CLI
 
         public void DBRaffle(string[] args)
         {
-            /*
+            
             var cli = Cli.Parse<RaffleArgs>(args);
             var rand = new Random();
-            var tickets = rand.Next(cli.Tickets);
-            var slots = rand.Next(cli.Slots);
-            */
+            var tickets = rand.Next(cli.Tickets.Value);
+            var slots = rand.Next(cli.Slots.Value);
+            var name = cli.Name;
+            var findHash = ArtUtils.SearchHash(name, tickets, slots);
 
             if (IsDebug)
             {

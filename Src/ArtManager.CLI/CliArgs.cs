@@ -45,6 +45,20 @@ namespace ArtManager.CLI
     }
 
     /// <summary>
+    /// Commission arguments extend the request by adding
+    /// price and payment options.
+    /// </summary>
+    class PayArgs : BaseArgs
+    {
+        [OptionParameter("price", 'p')]
+        public decimal? Price { get; set; }
+
+        [Required]
+        [OptionParameter("payment", 'P')]
+        public string Payment { get; set; }
+    }
+
+    /// <summary>
     /// YCH (Your Character Here) is a type of request where the
     /// picture is already known but not the character. Each
     /// character has their own respective slot that someone
@@ -54,11 +68,11 @@ namespace ArtManager.CLI
     {
         [Required]
         [OptionParameter("tickets", 't')]
-        public int Ticket { get; set; }
+        public int? Ticket { get; set; }
 
         [Required]
         [OptionParameter("slots", 's')]
-        public int Slot { get; set; }
+        public int? Slot { get; set; }
     }
 
     class RaffleArgs : GlobalArgs
@@ -76,27 +90,22 @@ namespace ArtManager.CLI
         /// </summary>
         [Required]
         [OptionParameter("tickets", 't')]
-        public int Tickets { get; set; }
+        public int? Tickets { get; set; }
 
         /// <summary>
         /// Maximum number of slots
         /// </summary>
         [Required]
         [OptionParameter("slots", 's')]
-        public int Slots { get; set; }
+        public int? Slots { get; set; }
     }
 
-    /// <summary>
-    /// Commission arguments extend the request by adding
-    /// price and payment options.
-    /// </summary>
-    class PayArgs : BaseArgs
+    class SearchArgs : PayArgs
     {
-        [OptionParameter("price", 'p')]
-        public decimal Price { get; set; }
+        [OptionParameter("tickets", 't')]
+        public int? Ticket { get; set; }
 
-        [Required]
-        [OptionParameter("payment", 'P')]
-        public string Payment { get; set; }
+        [OptionParameter("slots", 's')]
+        public int? Slot { get; set; }
     }
 }

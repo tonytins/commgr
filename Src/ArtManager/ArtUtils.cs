@@ -50,6 +50,9 @@ namespace ArtManager
                     case Catagory.YCH:
                         input = $"{art.Name}/{art.Price}/{art.Ticket}/{art.Slot}";
                         break;
+                    case Catagory.Raffle:
+                        input = $"{art.Name}/{art.Ticket}/{art.Slot}";
+                        break;
                     case Catagory.Request:
                     default:
                         input = $"{art.Name}/{art.Custmer.Name}/{art.Custmer.Contact}";
@@ -101,6 +104,18 @@ namespace ArtManager
                 Ticket = ticket,
                 Slot = slot,
                 Price = price,
+            };
+
+            return CalculateHash(art);
+        }
+
+        public static string SearchHash(string name,  int ticket, int slot)
+        {
+            var art = new Art
+            {
+                Name = name,
+                Ticket = ticket,
+                Slot = slot
             };
 
             return CalculateHash(art);

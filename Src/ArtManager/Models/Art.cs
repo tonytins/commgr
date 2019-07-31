@@ -47,9 +47,11 @@ namespace ArtManager.Models
         {
             get
             {
-                if (Slot.HasValue && Ticket.HasValue)
+                if (Slot.HasValue && Ticket.HasValue && Price.HasValue)
                     return Catagory.YCH;
-                if (Description != string.Empty && Price.HasValue)
+                else if (Slot.HasValue && Ticket.HasValue)
+                    return Catagory.Raffle;
+                else if (Description != string.Empty && Price.HasValue)
                     return Catagory.Commission;
                 else
                     return Catagory.Request;
@@ -59,6 +61,7 @@ namespace ArtManager.Models
         public string Name { get; set; }
         public int? Ticket { get; set; }
         public int? Slot { get; set; }
+        public string Status { get; set; }
         public decimal? Price { get; set; }
         public string Reference { get; set; }
         public string Description { get; set; }

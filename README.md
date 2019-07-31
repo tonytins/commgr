@@ -6,23 +6,17 @@
 
 [Usage](docs/Usage.md) | [To-do](TODO.md)
 
-Art Manager (``artm``) is a command line application for storing art request, commission, and YCH information. The application is a work in progress but contribution is welcomed.
+Art Manager (``artm``) is a command line application keeping track of request, commission, and YCH transactions. . The application is a work in progress but contribution is welcomed.
 
 ## Prerequisites
 
 - SDKs
   - [.NET Core 2.1](https://dotnet.microsoft.com/download/dotnet-core/2.1)
-  - [.NET Core 3.0 Preview 7+](https://dotnet.microsoft.com/download/dotnet-core/2.1) for unit tests
 - IDEs or Text Editors
   - Rider
   - VSCode 
-  - VS2019 16.2 (recommended)
-    - 16.3 for unit tests
+  - VS2019 16.2+ (recommended)
 
 ## Platforms
 
 See the [platforms](Docs/Platforms.md) page.
-
-## Developer Note
-
-The unit tests are written in VB.NET. While Art Manager is being developed for production purposes, the unit tests were written in VB.NET in order to better understand the language without having to starting from scratch with a new project.
