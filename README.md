@@ -17,6 +17,7 @@ Art Manager (``artm``) is a command line application keeping track of request, c
   - VSCode 
   - VS2019 16.2+ (recommended)
 
-## Platforms
+## Requirements
 
-See the [platforms](Docs/Platforms.md) page.
+ - .NET Core 2.2+ Runtime
+ - [Supported Platforms](docs/Platforms.md).

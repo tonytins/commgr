@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7B196F9C-63B0-4711-85F3-75C4B0592ADE}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		ArtManager.sln.licenseheader = ArtManager.sln.licenseheader
 		..\Platforms.md = ..\Platforms.md
 		..\README.md = ..\README.md
 		..\docs\Usage.md = ..\docs\Usage.md
@@ -13,9 +14,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtManager.CLI", "ArtManager.CLI\ArtManager.CLI.csproj", "{BD362A20-1E1B-4821-BD60-38DEC809738B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtManager", "ArtManager\ArtManager.csproj", "{5E7E5428-DC14-455A-8765-3F5E82D3A21B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtManager.Models", "ArtManager.Models\ArtManager.Models.csproj", "{5E7E5428-DC14-455A-8765-3F5E82D3A21B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtManager.Tests", "ArtManager.Tests\ArtManager.Tests.csproj", "{99CC4164-E167-4480-A2EB-4F1EE39ABDE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtManager.Common", "ArtManager.Common\ArtManager.Common.csproj", "{8C558362-B276-472A-A4DC-162A077C8514}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodkin", "..\..\Bro\Bodkin\Bodkin.csproj", "{47B3091F-757C-4AFE-A710-B43BF692BF58}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ArtManager.Tests", "ArtManager.Tests\ArtManager.Tests.fsproj", "{D32F6BB1-8C04-4506-A218-4B58A120D80B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +36,18 @@ Global
 		{5E7E5428-DC14-455A-8765-3F5E82D3A21B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E7E5428-DC14-455A-8765-3F5E82D3A21B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E7E5428-DC14-455A-8765-3F5E82D3A21B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99CC4164-E167-4480-A2EB-4F1EE39ABDE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99CC4164-E167-4480-A2EB-4F1EE39ABDE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99CC4164-E167-4480-A2EB-4F1EE39ABDE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99CC4164-E167-4480-A2EB-4F1EE39ABDE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C558362-B276-472A-A4DC-162A077C8514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C558362-B276-472A-A4DC-162A077C8514}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C558362-B276-472A-A4DC-162A077C8514}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C558362-B276-472A-A4DC-162A077C8514}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47B3091F-757C-4AFE-A710-B43BF692BF58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47B3091F-757C-4AFE-A710-B43BF692BF58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47B3091F-757C-4AFE-A710-B43BF692BF58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47B3091F-757C-4AFE-A710-B43BF692BF58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32F6BB1-8C04-4506-A218-4B58A120D80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32F6BB1-8C04-4506-A218-4B58A120D80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32F6BB1-8C04-4506-A218-4B58A120D80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32F6BB1-8C04-4506-A218-4B58A120D80B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

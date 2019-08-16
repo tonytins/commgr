@@ -7,17 +7,21 @@ using System.IO;
 using System.Threading.Tasks;
 using LiteDB;
 using Newtonsoft.Json;
+using Serilog;
+using Bodkin.Serilog;
 
 namespace ArtManager.Models
 {
     public enum Catagory
     {
         Unknown,
+        Personal,
         Request,
         Commission,
         YCH,
         Raffle,
     }
+
     public class Customer
     {
         public string Name { get; set; }
@@ -28,13 +32,16 @@ namespace ArtManager.Models
     public class Art
     {
 
-        public string Hash
+        public Art() { }
+
+        public Art(bool unknown)
         {
-            get
-            {
-                return ArtUtils.CalculateHash(this);
-            }
+            Unknown = unknown;
         }
+
+        bool Unknown { get; set; }
+
+        public Guid Id { get; } = Guid.NewGuid();
         public DateTime Timestamp { get; internal set; } = DateTime.Now;
 
         // Only used in data export
@@ -47,12 +54,17 @@ namespace ArtManager.Models
         {
             get
             {
-                if (Slot.HasValue && Ticket.HasValue && Price.HasValue)
+                if (!Slot.HasValue && !Ticket.HasValue
+                    && !Price.HasValue && string.IsNullOrEmpty(Customer.Name))
+                    return Catagory.Personal;
+                else if (Slot.HasValue && Ticket.HasValue && Price.HasValue)
                     return Catagory.YCH;
                 else if (Slot.HasValue && Ticket.HasValue)
                     return Catagory.Raffle;
-                else if (Description != string.Empty && Price.HasValue)
+                else if (!string.IsNullOrEmpty(Customer.Name) && Price.HasValue)
                     return Catagory.Commission;
+                else if (Unknown)
+                    return Catagory.Unknown;
                 else
                     return Catagory.Request;
             }
@@ -65,7 +77,7 @@ namespace ArtManager.Models
         public decimal? Price { get; set; }
         public string Reference { get; set; }
         public string Description { get; set; }
-        public Customer Custmer { get; set; }
+        public Customer Customer { get; set; }
 
         public void Save(string dir, string filename)
         {
@@ -84,11 +96,8 @@ namespace ArtManager.Models
             }
             catch (IOException err)
             {
+                SerilogHelper.LogException(err);
                 throw new IOException(err.Message);
-            }
-            catch (Exception err)
-            {
-                throw new Exception(err.Message);
             }
         }
 
@@ -116,12 +125,29 @@ namespace ArtManager.Models
             }
             catch (IOException err)
             {
+                SerilogHelper.LogException(err);
                 throw new IOException(err.Message);
             }
-            catch (Exception err)
+        }
+
+        public void LogModel()
+        {
+            switch (Catagory)
             {
-                throw new Exception(err.Message);
+                case Catagory.Personal:
+                    Log.Information($"Personal: {Name}.");
+                    break;
+                case Catagory.Commission:
+                    Log.Information($"Commission: {Name}, Price: {Price}, Customer: {Customer.Name}. Payment info on file.");
+                    break;
+                case Catagory.Request:
+                    Log.Information($"Request: {Name}, Customer: {Customer.Name}.");
+                    break;
+                case Catagory.YCH:
+                    Log.Information($"YCH: {Name}, Slot: {Slot}, Ticket: {Ticket}.");
+                    break;
             }
         }
+
     }
 }

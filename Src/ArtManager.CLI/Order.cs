@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ArtManager.Models;
-using EntryPoint;
+using CommandLine;
 using LiteDB;
+using Serilog;
+using ArtManager.Common;
 
 namespace ArtManager.CLI
 {
@@ -29,7 +31,7 @@ namespace ArtManager.CLI
         {
             try
             {
-                using (var db = new LiteDatabase(ArtmConsts.DBFILE))
+                using (var db = new LiteDatabase(AppConfig.GetConfig.Database))
                 {
                     var art = db.GetCollection<Art>(ArtmConsts.DBCOL);
                     art.Insert(Art);
@@ -37,27 +39,8 @@ namespace ArtManager.CLI
             }
             catch (Exception err)
             {
+                Log.Error(err.Message);
                 throw new Exception(err.Message);
-            }
-        }
-
-        public void DBRaffle(string[] args)
-        {
-            
-            var cli = Cli.Parse<RaffleArgs>(args);
-            var rand = new Random();
-            var tickets = rand.Next(cli.Tickets.Value);
-            var slots = rand.Next(cli.Slots.Value);
-            var name = cli.Name;
-            var findHash = ArtUtils.SearchHash(name, tickets, slots);
-
-            if (IsDebug)
-            {
-
-            }
-            else
-            {
-                throw new NotImplementedException();
             }
         }
 
@@ -65,28 +48,29 @@ namespace ArtManager.CLI
         {
             try
             {
-                using (var db = new LiteDatabase(ArtmConsts.DBFILE))
+                using (var db = new LiteDatabase(AppConfig.GetConfig.Database))
                 {
                     var art = db.GetCollection<Art>(ArtmConsts.DBCOL);
-                    art.EnsureIndex(x => x.Hash);
-                    var query = art.Include(x => x.Hash)
-                        .Include(x => x.Custmer)
+                    art.EnsureIndex(x => x.Id);
+                    var query = art.Include(x => x.Id)
+                        .Include(x => x.Customer)
                         .Include(x => x.Name)
                         .FindAll();
 
                     foreach (var q in query)
                         _arts.Add(q);
 
-                    var json = ArtUtils.AsJson(_arts);
+                    var orders = ArtUtils.AsJson(_arts);
 
                     if (IsDebug)
-                        Console.WriteLine(json);
+                        Console.WriteLine(orders);
                     else if (Debugger.IsAttached)
-                        Debug.WriteLine(json);
+                        Debug.WriteLine(orders);
                 }
             }
             catch (Exception err)
             {
+                Log.Error(err.Message);
                 throw new Exception(err.Message);
             }
         }

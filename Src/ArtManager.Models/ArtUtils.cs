@@ -1,12 +1,22 @@
+// Copyright (c) Anthony Wilcox and contributors. All rights reserved.
+// Licensed under the GNU GPL v3 license. See LICENSE file in the project
+// root for full license information.
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using ArtManager.Models;
+using System.Diagnostics;
+using Serilog;
 using Newtonsoft.Json;
+using Bogus;
 
-namespace ArtManager
+namespace ArtManager.Models
 {
+    internal class FillerData
+    {
+        public string Hash { get; set; }
+    }
+
     public static class ArtUtils
     {
         static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
@@ -36,27 +46,60 @@ namespace ArtManager
             return JsonConvert.SerializeObject(art, Formatting.Indented, _serializerSettings);
         }
 
+        /// <summary>
+        /// Prints the Json data to the screen
+        /// </summary>
+        /// <param name="art"></param>
+        public static void WriteJson(Art art)
+        {
+            if (Debugger.IsAttached)
+                Debug.WriteLine(AsJson(art));
+            else
+                Console.WriteLine(AsJson(art));
+        }
+
+        /// <summary>
+        /// Prints the Json data to the screen
+        /// </summary>
+        /// <param name="art"></param>
+        public static void WriteJson(List<Art> art)
+        {
+            if (Debugger.IsAttached)
+                Debug.WriteLine(AsJson(art));
+            else
+                Console.WriteLine(AsJson(art));
+        }
+
         internal static string CalculateHash(Art art)
         {
+            var filler = new Faker<FillerData>();
+            filler.RuleFor(o => o.Hash, r => r.Random.Hash());
+
             using (var sha = SHA256.Create())
             {
                 var input = string.Empty;
 
                 switch (art.Catagory)
                 {
+                    case Catagory.Personal:
+                        input = $"{art.Name}";
+                        break;
                     case Catagory.Commission:
-                        input = $"{art.Name}/{art.Price}/{art.Custmer.Name}/{art.Custmer.Contact}";
+                        input = $"{art.Name}\\{art.Price}\\{art.Customer.Name}\\{art.Customer.Contact}";
                         break;
                     case Catagory.YCH:
-                        input = $"{art.Name}/{art.Price}/{art.Ticket}/{art.Slot}";
+                        input = $"{art.Name}\\{art.Price}\\{art.Ticket}\\{art.Slot}";
                         break;
                     case Catagory.Raffle:
-                        input = $"{art.Name}/{art.Ticket}/{art.Slot}";
+                        input = $"{art.Name}\\{art.Ticket}\\{art.Slot}";
                         break;
                     case Catagory.Request:
-                    default:
-                        input = $"{art.Name}/{art.Custmer.Name}/{art.Custmer.Contact}";
+                        input = $"{art.Name}\\{art.Customer.Name}\\{art.Customer.Contact}";
                         break;
+                    case Catagory.Unknown:
+                    default:
+                        var mHash = filler.Generate();
+                        return mHash.Hash;
                 }
 
                 var toBytes = Encoding.Unicode.GetBytes(input);
@@ -70,7 +113,7 @@ namespace ArtManager
             var art = new Art
             {
                 Name = name,
-                Custmer = new Customer
+                Customer = new Customer
                 {
                     Name = cust,
                     Contact = cont,
@@ -85,7 +128,7 @@ namespace ArtManager
             var art = new Art
             {
                 Name = name,
-                Custmer = new Customer
+                Customer = new Customer
                 {
                     Name = cust,
                     Contact = cont,
@@ -109,7 +152,7 @@ namespace ArtManager
             return CalculateHash(art);
         }
 
-        public static string SearchHash(string name,  int ticket, int slot)
+        public static string SearchHash(string name, int ticket, int slot)
         {
             var art = new Art
             {
@@ -120,5 +163,16 @@ namespace ArtManager
 
             return CalculateHash(art);
         }
+
+        public static string SearchHash(string name)
+        {
+            var art = new Art
+            {
+                Name = name,
+            };
+
+            return CalculateHash(art);
+        }
+
     }
 }
