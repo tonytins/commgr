@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ArtManager.Models;
-using CommandLine;
 using LiteDB;
 using Serilog;
 using ArtManager.Common;
@@ -33,7 +32,7 @@ namespace ArtManager.CLI
             {
                 using (var db = new LiteDatabase(AppConfig.GetConfig.Database))
                 {
-                    var art = db.GetCollection<Art>(ArtmConsts.DBCOL);
+                    var art = db.GetCollection<Art>(ArtmConsts.DB_COLUMN);
                     art.Insert(Art);
                 }
             }
@@ -50,7 +49,7 @@ namespace ArtManager.CLI
             {
                 using (var db = new LiteDatabase(AppConfig.GetConfig.Database))
                 {
-                    var art = db.GetCollection<Art>(ArtmConsts.DBCOL);
+                    var art = db.GetCollection<Art>(ArtmConsts.DB_COLUMN);
                     art.EnsureIndex(x => x.Id);
                     var query = art.Include(x => x.Id)
                         .Include(x => x.Customer)

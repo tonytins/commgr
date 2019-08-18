@@ -1,9 +1,8 @@
 // Copyright (c) Anthony Wilcox and contributors. All rights reserved.
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
-using System;
-using System.Diagnostics;
 using System.IO;
+using Bodkin.Serilog;
 using Nett;
 using Serilog;
 
@@ -13,7 +12,7 @@ namespace ArtManager.Common
     {
         const string CFG_FILE = "artm.toml";
 
-        public string Database { get; set; } = "artm.db";
+        public string Database { get; set; } = Path.Combine(ArtmConsts.AppDataPath, ArtmConsts.DEFUALT_DB_FILE);
 
         public bool Debug { get; set; } = false;
 
@@ -22,35 +21,26 @@ namespace ArtManager.Common
             get
             {
                 var cfgInstance = new AppConfig();
+                var cfgPath = Path.Combine(ArtmConsts.AppDataPath, CFG_FILE);
 
                 try
                 {
-                    if (!File.Exists(CFG_FILE))
+                    if (!File.Exists(cfgPath))
                     {
-                        Toml.WriteFile(cfgInstance, CFG_FILE);
-                        Log.Information($"{CFG_FILE} not found. Creating new file.");
+                        Toml.WriteFile(cfgInstance, cfgPath);
+                        Log.Information($"{cfgPath} not found. Creating new file.");
                     }
 
-                    if (File.Exists(CFG_FILE))
-                        return Toml.ReadFile<AppConfig>(CFG_FILE);
+                    if (File.Exists(cfgPath))
+                        return Toml.ReadFile<AppConfig>(cfgPath);
 
                     return cfgInstance;
                 }
                 catch (IOException err)
                 {
-                    if (!Debugger.IsAttached)
-                        Log.Fatal($"{err.Message}{Environment.NewLine}{err.StackTrace}");
-                    else
-                        Log.Fatal(err.Message);
+                    SerilogHelper.LogException(err);
 
                     throw new IOException(err.Message);
-                }
-                catch (Exception err)
-                {
-                    if (!Debugger.IsAttached)
-                        Log.Fatal($"{err.Message}{Environment.NewLine}{err.StackTrace}");
-
-                    throw new Exception(err.Message);
                 }
             }
         }

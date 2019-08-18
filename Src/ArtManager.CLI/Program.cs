@@ -3,10 +3,11 @@
 // root for full license information.
 using System;
 using System.Diagnostics;
-using CommandLine;
+using ArtManager.Common;
+using ArtManager.CLI.Commands;
 using ArtManager.CLI.Interface;
 using Bodkin.Serilog;
-using ArtManager.CLI.Commands;
+using CommandLine;
 
 namespace ArtManager.CLI
 {
@@ -19,7 +20,7 @@ namespace ArtManager.CLI
                 if (Debugger.IsAttached)
                     SerilogRunner.InitLogToDebug();
                 else
-                    SerilogRunner.InitLogToFile("artm");
+                    SerilogRunner.InitLogToDirectory(ArtmConsts.AppDataPath, "artm");
 
                 ICommand command;
 

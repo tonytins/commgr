@@ -12,22 +12,6 @@ using Bodkin.Serilog;
 
 namespace ArtManager.Models
 {
-    public enum Catagory
-    {
-        Unknown,
-        Personal,
-        Request,
-        Commission,
-        YCH,
-        Raffle,
-    }
-
-    public class Customer
-    {
-        public string Name { get; set; }
-        public string Contact { get; set; }
-        public string Payment { get; set; }
-    }
 
     public class Art
     {
