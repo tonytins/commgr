@@ -12,15 +12,19 @@ namespace ArtManager.Common
     {
         const string CFG_FILE = "artm.toml";
 
-        public string Database { get; set; } = Path.Combine(ArtmConsts.AppDataPath, ArtmConsts.DEFUALT_DB_FILE);
+        public string Database { get; set; }
 
-        public bool Debug { get; set; } = false;
+        public bool Debug { get; set; }
 
         public static AppConfig GetConfig
         {
             get
             {
-                var cfgInstance = new AppConfig();
+                var cfgInstance = new AppConfig()
+                {
+                    Database = Path.Combine(ArtmConsts.AppDataPath, ArtmConsts.DEFUALT_DB_FILE),
+                    Debug = false,
+                };
                 var cfgPath = Path.Combine(ArtmConsts.AppDataPath, CFG_FILE);
 
                 try
