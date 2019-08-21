@@ -14,6 +14,16 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "restore",
+            "command": "dotnet restore",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "publish debug linux x64",
             "command": "dotnet publish ArtManager.CLI -r linux-x64 -c Debug /p:PublishSingleFile=true /p:PublishTrimmed=true",
             "type": "shell",

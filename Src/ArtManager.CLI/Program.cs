@@ -24,7 +24,7 @@ namespace ArtManager.CLI
 
                 ICommand command;
 
-                return Parser.Default.ParseArguments<SelfOpt, RequestOpt, ComOpt, YchOpt>(args)
+                return Parser.Default.ParseArguments<SelfOpt, RequestOpt, ComOpt, YchOpt, ListOpt>(args)
                     .MapResult((SelfOpt opts) =>
                     {
                         command = new SelfOpt();
@@ -40,6 +40,10 @@ namespace ArtManager.CLI
                     }, (YchOpt opts) =>
                     {
                         command = new YchOpt();
+                        return command.RunCommand(opts);
+                    }, (ListOpt opts) =>
+                    {
+                        command = new ListOpt();
                         return command.RunCommand(opts);
                     }, errs => 1);
             }

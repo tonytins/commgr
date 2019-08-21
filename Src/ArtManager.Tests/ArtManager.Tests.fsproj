@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -13,13 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bodkin" Version="0.1.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Bro\Bodkin\Bodkin.csproj" />
     <ProjectReference Include="..\ArtManager.Common\ArtManager.Common.csproj" />
     <ProjectReference Include="..\ArtManager.Models\ArtManager.Models.csproj" />
   </ItemGroup>

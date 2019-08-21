@@ -2,7 +2,7 @@
   "profiles": {
     "ArtManager": {
       "commandName": "Project",
-      "commandLineArgs": "-n \"Golden Eye\" -d \"The origin story of Felix Green\" -D"
+      "commandLineArgs": "self -n \"Golden Eye\" -d \"a story about Felix Green\""
     },
     "Docker": {
       "commandName": "Docker"

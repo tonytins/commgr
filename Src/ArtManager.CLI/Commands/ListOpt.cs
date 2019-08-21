@@ -8,11 +8,10 @@ using CommandLine;
 
 namespace ArtManager.CLI.Commands
 {
-    [Verb("com")]
-    class ComOpt : ICommand, IBaseArgs
+    [Verb("list")]
+    class ListOpt : ICommand, IBaseArgs
     {
-        Art _art;
-        Order _order;
+        readonly Order _order;
 
         public string Name { get; set; }
         public string Description { get; set; }
@@ -27,23 +26,9 @@ namespace ArtManager.CLI.Commands
 
         public int RunCommand(IBaseArgs cli)
         {
-            _art = new Art()
-            {
-                Name = cli.Name,
-                Customer = new Customer
-                {
-                    Name = cli.Customer,
-                    Contact = cli.Contact,
-                    Payment = cli.Payment,
-                },
-                Price = cli.Price,
-                Description = cli.Description,
-            };
-            _order = new Order(_art);
-            _order.DBInsert();
+            _order.DbListAll();
 
             return Environment.ExitCode;
         }
-
     }
 }

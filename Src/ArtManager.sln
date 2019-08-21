@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtManager.Models", "ArtMan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtManager.Common", "ArtManager.Common\ArtManager.Common.csproj", "{8C558362-B276-472A-A4DC-162A077C8514}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodkin", "..\..\Bro\Bodkin\Bodkin.csproj", "{47B3091F-757C-4AFE-A710-B43BF692BF58}"
-EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ArtManager.Tests", "ArtManager.Tests\ArtManager.Tests.fsproj", "{D32F6BB1-8C04-4506-A218-4B58A120D80B}"
 EndProject
 Global
@@ -40,10 +38,6 @@ Global
 		{8C558362-B276-472A-A4DC-162A077C8514}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C558362-B276-472A-A4DC-162A077C8514}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C558362-B276-472A-A4DC-162A077C8514}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47B3091F-757C-4AFE-A710-B43BF692BF58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47B3091F-757C-4AFE-A710-B43BF692BF58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47B3091F-757C-4AFE-A710-B43BF692BF58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47B3091F-757C-4AFE-A710-B43BF692BF58}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D32F6BB1-8C04-4506-A218-4B58A120D80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D32F6BB1-8C04-4506-A218-4B58A120D80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D32F6BB1-8C04-4506-A218-4B58A120D80B}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -11,28 +11,23 @@ namespace ArtManager.CLI.Commands
 {
 
     [Verb("ych")]
-    class YchOpt : ICommand, IYchArgs
+    class YchOpt : ICommand, IBaseArgs
     {
         Art _art;
         Order _order;
 
-        public int? Ticket { get; set; }
-        public int? Slot { get; set; }
-        public decimal? Price { get; set; }
-        public string Payment { get; set; }
-        public string Customer { get; set; }
-        public string Contact { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Reference { get; set; }
-        public bool Debug { get; set; }
+        public string Customer { get; set; }
+        public string Contact { get; set; }
+        public decimal? Price { get; set; }
+        public string Payment { get; set; }
+        public int? Ticket { get; set; }
+        public int? Slot { get; set; }
+        public bool? Debug { get; set; }
 
         public int RunCommand(IBaseArgs cli)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int RunCommand(IYchArgs cli)
         {
             _art = new Art()
             {
@@ -50,20 +45,10 @@ namespace ArtManager.CLI.Commands
             _order = new Order(_art);
             _order.DBInsert();
 
-            if (cli.Debug || Debugger.IsAttached)
+            if (cli.Debug.HasValue || Debugger.IsAttached)
                 _order.DbListAll();
 
             return Environment.ExitCode;
-        }
-
-        public int RunCommand(ICustArgs cli)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int RunCommand(IPayArgs cli)
-        {
-            throw new NotImplementedException();
         }
     }
 
