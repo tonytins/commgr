@@ -4,8 +4,8 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "clean",
-            "command": "dotnet clean",
+            "label": "build",
+            "command": "dotnet build",
             "type": "shell",
             "group": "build",
             "presentation": {
@@ -16,6 +16,16 @@
         {
             "label": "restore",
             "command": "dotnet restore",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "clean",
+            "command": "dotnet clean",
             "type": "shell",
             "group": "build",
             "presentation": {

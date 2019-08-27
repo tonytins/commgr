@@ -6,7 +6,7 @@ using System.Diagnostics;
 using ArtManager.Common;
 using ArtManager.CLI.Commands;
 using ArtManager.CLI.Interface;
-using Bodkin.Serilog;
+using Sixam.Logging;
 using CommandLine;
 
 namespace ArtManager.CLI

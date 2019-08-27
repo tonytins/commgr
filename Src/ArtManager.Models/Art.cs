@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using LiteDB;
 using Newtonsoft.Json;
 using Serilog;
-using Bodkin.Serilog;
+using Sixam.Logging;
 
 namespace ArtManager.Models
 {

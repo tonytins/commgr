@@ -9,7 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bodkin" Version="0.1.2" />
+    <PackageReference Include="Sixam.Logging" Version="0.1.0" />
+    <PackageReference Include="Sixam.Utils" Version="0.1.0" />
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.11" />
