@@ -1,6 +1,8 @@
-// Copyright (c) Anthony Wilcox and contributors. All rights reserved.
-// Licensed under the GNU GPL v3 license. See LICENSE file in the project
-// root for full license information.
+/*
+ * Copyright (c) Anthony Wilcox and contributors. All rights reserved.
+ * Licensed under the MPL 2.0 license. See LICENSE file in the project
+ * root for full license information.
+ */
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -25,8 +27,8 @@ namespace ArtManager.Models
 
         bool Unknown { get; set; }
 
-        public Guid Id { get; } = Guid.NewGuid();
-        public DateTime Timestamp { get; internal set; } = DateTime.Now;
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public DateTime Timestamp { get; set; } = DateTime.Now;
 
         // Only used in data export
         [BsonIgnore]

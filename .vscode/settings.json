@@ -1,0 +1,23 @@
+{
+    "psi-header.changes-tracking": {
+        "exclude": ["jsonc", "json"],
+        "excludeGlob": ["**/Bodkin/**", "**/out/**", "**/settings.json"],
+        "autoHeader": "autoSave",
+        "enforceHeader": true
+    },
+    "psi-header.config": {
+        "forceToTop": true,
+        "license": "MPL-2.0",
+        "author": "Anthony Wilcox"
+    },
+    "psi-header.templates": [
+        {
+            "language": "csharp",
+            "template": [
+                "Copyright (c) <<year>> <<author>> and contributors. All rights reserved.",
+                "Licensed under the MPL 2.0 or later. See LICENSE file in the project",
+                "root for full license information."
+            ]
+        }
+    ]
+}

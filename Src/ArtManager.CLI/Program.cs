@@ -1,6 +1,8 @@
-// Copyright (c) Anthony Wilcox and contributors. All rights reserved.
-// Licensed under the GNU GPL v3 license. See LICENSE file in the project
-// root for full license information.
+/*
+ * Copyright (c) Anthony Wilcox and contributors. All rights reserved.
+ * Licensed under the MPL 2.0 license. See LICENSE file in the project
+ * root for full license information.
+ */
 using System;
 using System.Diagnostics;
 using ArtManager.Common;
@@ -8,6 +10,7 @@ using ArtManager.CLI.Commands;
 using ArtManager.CLI.Interface;
 using Sixam.Logging;
 using CommandLine;
+using Serilog;
 
 namespace ArtManager.CLI
 {
@@ -15,13 +18,13 @@ namespace ArtManager.CLI
     {
         static int Main(string[] args)
         {
+            if (Debugger.IsAttached)
+                SerilogRunner.InitLogToDebug();
+            else
+                SerilogRunner.InitLogToDirectory(ArtmConsts.AppDataPath, ArtmConsts.APP_NAME);
+
             try
             {
-                if (Debugger.IsAttached)
-                    SerilogRunner.InitLogToDebug();
-                else
-                    SerilogRunner.InitLogToDirectory(ArtmConsts.AppDataPath, "artm");
-
                 ICommand command;
 
                 return Parser.Default.ParseArguments<SelfOpt, RequestOpt, ComOpt, YchOpt, ListOpt>(args)
@@ -51,6 +54,10 @@ namespace ArtManager.CLI
             {
                 SerilogHelper.LogException(err, true);
                 throw new Exception(err.Message);
+            }
+            finally
+            {
+                Log.CloseAndFlush();
             }
         }
     }

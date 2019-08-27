@@ -1,6 +1,8 @@
-// Copyright (c) Anthony Wilcox and contributors. All rights reserved.
-// Licensed under the GNU GPL v3 license. See LICENSE file in the project
-// root for full license information.
+/*
+ * Copyright (c) Anthony Wilcox and contributors. All rights reserved.
+ * Licensed under the MPL 2.0 license. See LICENSE file in the project
+ * root for full license information.
+ */
 using System;
 using ArtManager.CLI.Interface;
 using ArtManager.Models;
