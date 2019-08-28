@@ -5,11 +5,11 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>artm</AssemblyName>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <Version>0.2</Version>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sixam.Logging" Version="0.1.0" />
+    <PackageReference Include="Sixam.Logging" Version="0.1.1" />
     <PackageReference Include="Sixam.Utils" Version="0.1.0" />
     <PackageReference Include="CommandLineParser" Version="2.6.0" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
