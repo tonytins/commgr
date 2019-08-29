@@ -1,0 +1,7 @@
+language: csharp
+solution: src/ArtManager.sln
+
+# Blacklist
+branches:
+  except:
+    - gh-pages
