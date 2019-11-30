@@ -19,7 +19,6 @@ See also the list of [contributors](https://github.com/tonytins/citylimits/contr
 ### Tested Platforms
 
 - Ubuntu 16.04+
-- macOS 10.15 Catalina
 - Windows 10 v1809+
 
 ## License
