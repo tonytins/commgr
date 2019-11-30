@@ -8,7 +8,7 @@ A command line interface for storing art request, commission, and YCH informatio
 
 ### Prerequisites
 
-- Rust 1.32+
+- Rust 2018 update
 
 ## Authors
 
@@ -16,13 +16,12 @@ A command line interface for storing art request, commission, and YCH informatio
 
 See also the list of [contributors](https://github.com/tonytins/citylimits/contributors) who participated in this project.
 
-### Platforms
+### Tested Platforms
 
-- Linux 2.16.8+
-- macOS 10.7+
-- Windows 7+
-    - Windows 10 October 2018 Update or above recommended
-	
+- Ubuntu 16.04+
+- macOS 10.15 Catalina
+- Windows 10 v1809+
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
