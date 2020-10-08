@@ -22,7 +22,3 @@ features = [ "wrap_help" ]
 [dependencies.serde]
 version = "1.0"
 features = ["derive"]
-
-[dependencies.uuid]
-version = "0.8"
-features = ["serde", "v4"]
