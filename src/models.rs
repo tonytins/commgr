@@ -29,9 +29,11 @@ pub struct Order {
     #[clap(short, long)]
     pub payment: String,
     #[clap(short, long)]
+    pub reference: Option<String>,
+    #[clap(short, long)]
     pub description: Option<String>,
     #[clap(short, long)]
-    pub ych: Option<String>, // Name of the YCH
+    pub ych: Option<String>, // YCH name
     #[clap(short, long)]
-    pub slot: Option<i32>, // YCH name
+    pub slot: Option<i32>, // YCH slot
 }

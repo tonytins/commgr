@@ -37,7 +37,7 @@ fn csv_manager<S: Into<String>>(file: S, order: &Order) -> File {
             format!("Id,Date,Client,Fee,Payment,Description")
         } else {
             // format!("{},{},{},{},{},{},{}", id, fancy_date(), order.client, order.fee, order.payment,order.ych.unwrap(),order.slot.unwrap())
-            format!("Id,Date,Client,Fee,Payment,YCH,Slot")
+            format!("Id,Date,Client,Reference,Fee,Payment,YCH,Slot")
         };
 
         if let Err(err) = writeln!(manger, "{}", header) {
@@ -59,13 +59,13 @@ fn order_csv(order: Order) {
     // Append status to time card file
     let mut csv = csv_manager(&file_name, &order);
     let id = Uuid::new_v4().to_string();
-    let record = if order.ych.is_none() {
+    let record = if order.ych.is_none() || order.slot.is_none() {
 
         format!("{},{},{},{},{},\"{}\"", id, fancy_date(),
                 order.client, order.fee, order.payment, order.description.unwrap())
 
     } else {
-        format!("{},{},{},{},{},{},{}", id, fancy_date(), order.client, order.fee, order.payment,order.ych.unwrap(),order.slot.unwrap())
+        format!("{},{},{},{},{},{},{},{}", id, fancy_date(), order.client, order.reference.unwrap(), order.fee, order.payment,order.ych.unwrap(),order.slot.unwrap())
     };
 
     if let Err(err) = writeln!(csv, "{}", record) {

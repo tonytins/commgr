@@ -20,8 +20,8 @@ fd8a56a1-77b1-4301-8c5e-1b726d4be645,2020/8/8,Alberta Mann,43,5458-2118-9194-851
 Example: ``artm order -c "Bessie Hettinger" -s 4 -f 25 -p "31VLNZXfcpoA68wPRuWSdrmT3jv5k" -r "https://www.furaffinity.net/view/20700210/" -y Synthesize``
 
 ```csv
-Id,Date,Client,Fee,Payment,YCH,Slot
-0511b99f-46a5-4b77-8acc-c82f4365b412,2020/8/8,Bessie Hettinger,25,31VLNZXfcpoA68wPRuWSdrmT3jv5k,Synthesize,4
+Id,Date,Client,Reference,Fee,Payment,YCH,Slot
+2a6df6ae-a627-4cee-88f4-b88ae0e80a1f,2020/8/8,Bessie Hettinger,https://www.furaffinity.net/view/20700210/,25,31VLNZXfcpoA68wPRuWSdrmT3jv5k,Synthesize,4
 ```
 
 ### Raffle
