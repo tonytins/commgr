@@ -1,119 +1,84 @@
-// Copyright (c) Anthony Wilcox and contributors. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project
+// Copyright (c) Anthony Leland and contributors. All rights reserved.
+// Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
-mod art;
-mod flags;
+use artm::models::{Opts, Order, Orders};
+use chrono::{Local, Datelike};
+use clap::Clap;
+use std::{fs, fs::{OpenOptions, File}};
+use std::io::Write;
+use std::path::Path;
+use uuid::Uuid;
 
-use flags::*;
-use simplelog::*;
-use art::{ych, comm, req};
-use self_update::backends::github::Update;
-use clap::{crate_authors, crate_description,
-           crate_version, load_yaml, App};
-use std::{fs::File, error::Error, process::exit};
+fn fancy_date() -> String {
+    let dt_local = Local::now();
+    format!("{}/{}/{}", dt_local.year(), dt_local.day(), dt_local.day())
+}
 
-const CREDITS: &str = "artm is licensed under the BSD 3-clause license.\n\
-    ###########################\
-    config - MIT/Apache-2.0\n\
-    self_update - MIT\n\
-    log - MIT/Apache-2.0\n\
-    simplelog - MIT/Apache-2.0\n\
-    clap - MIT\n\
-    UUID - MIT/Apache-2.0\n\
-    serde - MIT/Apache-2.0\n\
-    chrono - MIT/Apache-2.0\n";
+fn csv_manager<S: Into<String>>(file: S, order: &Order) -> File {
+    // Create a new time card, if it doesn't exist
+    let file_name = &file.into();
+
+    if !Path::new(&file_name).exists() {
+        File::create(&file_name).expect("Error creating file");
+    }
+
+    // Append status to time card file
+    let mut manger = OpenOptions::new()
+        .write(true)
+        .append(true)
+        .open(&file_name)
+        .expect("Error writing to file.");
+
+    let contents = fs::read_to_string(file_name)
+        .expect("Error opening file");
+
+    if contents.is_empty() {
+        let header = if order.ych.is_none() {
+            format!("Id,Date,Client,Fee,Payment,Description")
+        } else {
+            // format!("{},{},{},{},{},{},{}", id, fancy_date(), order.client, order.fee, order.payment,order.ych.unwrap(),order.slot.unwrap())
+            format!("Id,Date,Client,Fee,Payment,YCH,Slot")
+        };
+
+        if let Err(err) = writeln!(manger, "{}", header) {
+            eprintln!("Couldn't write to file: {}", err);
+        }
+    }
+
+    manger
+}
+
+fn order_csv(order: Order) {
+
+    let file_name = if order.ych.is_none() {
+        format!("commission.csv")
+    } else {
+        format!("ych.csv")
+    };
+
+    // Append status to time card file
+    let mut csv = csv_manager(&file_name, &order);
+    let id = Uuid::new_v4().to_string();
+    let record = if order.ych.is_none() {
+
+        format!("{},{},{},{},{},\"{}\"", id, fancy_date(),
+                order.client, order.fee, order.payment, order.description.unwrap())
+
+    } else {
+        format!("{},{},{},{},{},{},{}", id, fancy_date(), order.client, order.fee, order.payment,order.ych.unwrap(),order.slot.unwrap())
+    };
+
+    if let Err(err) = writeln!(csv, "{}", record) {
+        eprintln!("Couldn't write to file: {}", err);
+    }
+}
 
 fn main() {
-    let log_file = "artm.log";
-    let about_desc = format!("{}\n{}", crate_description!(), CREDITS);
+    let matches: Opts = Opts::parse();
 
-    CombinedLogger::init(
-        vec![
-            TermLogger::new(LevelFilter::Warn,
-                            Config::default())
-                .unwrap(),
-            WriteLogger::new(LevelFilter::Info,
-                             Config::default(),
-                             File::create(log_file)
-                                 .unwrap()),
-
-        ]
-    ).unwrap();
-
-    let yaml = load_yaml!("artm.yml");
-    let matches = App::from_yaml(yaml)
-        .author(crate_authors!())
-        .about(crate_description!())
-        .version(crate_version!())
-        .get_matches();
-
-    let debug = matches.is_present(DEBUG_FLAG);
-    let name = matches.value_of(NAME_OPT).unwrap();
-
-    let mut cust_name = "";
-    let mut desc= "";
-    let mut contact = "";
-    let mut slot = "";
-    let mut payment = "";
-    let mut price = "";
-    let mut reference = "";
-    let mut version = "";
-
-    if matches.is_present(UPDATE_CMD) {
-
-        version = matches.value_of(VERSION_OPT).unwrap();
-
-        match matches.is_present(VERSION_OPT) {
-            true => {
-                unimplemented!();
-            }
-            false => {
-                unimplemented!();
-            }
+    match matches.order {
+        Orders::Order(order) => {
+            order_csv(order);
         }
-    }
-
-    if matches.is_present(CREDITS_FLAG) {
-        println!("{}", CREDITS);
-    }
-
-    if !matches.is_present(RAFFLE_CMD) {
-        cust_name = matches.value_of(CUST_NAME_OPT).unwrap();
-        contact = matches.value_of(CONTACT_OPT).unwrap();
-
-        match matches.is_present(PAYMENT_OPT) {
-            true => {
-                payment = matches.value_of(PAYMENT_OPT).unwrap();
-                price = matches.value_of(PRICE_OPT).unwrap();
-
-                match matches.is_present(SLOT_OPT) || matches.is_present(REF_OPT) {
-                    true => {
-                        slot = matches.value_of(SLOT_OPT).unwrap();
-                        reference = matches.value_of(REF_OPT).unwrap();
-
-                        ych(name, price, slot, reference, cust_name, payment, contact, debug);
-                    }
-                    false => {
-                        desc = matches.value_of(DESC_OPT).unwrap();
-
-                        comm(name, price, desc, cust_name,payment, contact, debug);
-                    }
-                }
-            }
-            false => {
-                desc = matches.value_of(DESC_OPT).unwrap();
-
-                req(name, desc, cust_name, contact, debug);
-            }
-        }
-    }
-    else {
-        /*
-        let slots = matches.value_of(SLOTS_OPT).unwrap();
-        let tickets = matches.value_of(TICKETS_OPT).unwrap();
-
-        raffle(name, tickets.parse().unwrap(), slots.parse().unwrap(), debug);
-        */
-        unimplemented!();
     }
 }

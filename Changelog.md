@@ -1,5 +1,23 @@
 # Change log
 
+## 0.4.0
+**BREAKING CHANGES**
+
+Art Manager has been completely rewritten to use Clap's derive macros. This dramatically reduces the complexity with the lines of code have been reduced from 499 to 116.
+
+However, this change also brings back subcommands. Similar to 0.3, the ``order`` subcommand combines YCHs and commissions. ``-y`` or ``--ych`` is an option - not a flag - that requires the name of the YCH. ``--slot`` is still required.
+
+Finally, the custom JSON-based format has been dropped in favor of CSV, for use in office applications. Because CSV files are more compact, each order now has their own respective file. I.e. YCH has ``ych.csv``, commissions have ``commission.csv``, and so on.
+
+### Other changes
+
+- ``--contact`` has been removed because it conflicts with ``--client``
+    - This may return under another name
+- ``--name`` was removed because ``--description`` is more important 
+- ``--price`` has been renamed ``--fee`` due to conflicts with ``--payment``
+- Fixed licensing confusion
+- Request has been removed because those are personal
+
 ## 0.3.0
 
 - ``.art[ycr]`` replaces the former ``.artm[ycr]`` format.

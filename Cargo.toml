@@ -1,35 +1,28 @@
 [package]
 name = "artm"
-version = "0.3.0"
-authors = ["Anthony Wilcox"]
-repository = "https://github.com/antonwilc0x/artm"
+version = "0.4.0"
+authors = ["Anthony Leland"]
+repository = "https://github.com/tonytins/artm"
 license = "GNU GPL v3"
 edition = "2018"
 description = """
-A request, commmission, and YCH art manager.
+A commmission and YCH manager.
 """
 
 [dependencies]
-config = "0.9"
-self_update = "0.7"
-log = "0.4"
-simplelog = "^0.5.0"
-serde_json = "1.0"
-rand = "0.4"
-sha2 = "0.8.0"
+self_update = "0.20"
+chrono = "0.4"
+anyhow = "1.0"
+csv = "1.1"
 
 [dependencies.clap]
-version = "2.32"
-features = [ "yaml", "wrap_help" ]
-
-[dependencies.uuid]
-version = "0.7"
-features = ["serde", "v4"]
+version = "3.0.0-beta.2"
+features = [ "wrap_help" ]
 
 [dependencies.serde]
 version = "1.0"
 features = ["derive"]
 
-[dependencies.chrono]
-version = "0.4"
-features = ["serde"]
+[dependencies.uuid]
+version = "0.8"
+features = ["serde", "v4"]
