@@ -7,9 +7,8 @@ use clap::Clap;
 use std::{fs, fs::{OpenOptions, File}};
 use std::io::Write;
 use std::path::Path;
-use uuid::Uuid;
 
-fn fancy_date() -> String {
+fn simple_date() -> String {
     let dt_local = Local::now();
     format!("{}/{}/{}", dt_local.month(), dt_local.day(), dt_local.year())
 }
@@ -18,15 +17,15 @@ fn csv_manager<S: Into<String>>(file: S, order: &Order) -> File {
     // Create a new time card, if it doesn't exist
     let file_name = &file.into();
 
-    if !Path::new(&file_name).exists() {
-        File::create(&file_name).expect("Error creating file");
+    if !Path::new(file_name).exists() {
+        File::create(file_name).expect("Error creating file");
     }
 
     // Append status to time card file
     let mut manger = OpenOptions::new()
         .write(true)
         .append(true)
-        .open(&file_name)
+        .open(file_name)
         .expect("Error writing to file.");
 
     let contents = fs::read_to_string(file_name)
@@ -59,11 +58,12 @@ fn order_csv(order: Order) {
     let mut csv = csv_manager(&file_name, &order);
     let record = if order.ych.is_none() || order.slot.is_none() {
 
-        format!("{},{},{},{},\"{}\"", fancy_date(),
-                order.client, order.fee, order.payment, order.description.unwrap())
+        format!("{},{},{},{},\"{}\"", simple_date(), order.client, order.fee,
+                order.payment, order.description.unwrap())
 
     } else {
-        format!("{},{},{},{},{},{},{}", fancy_date(), order.client, order.reference.unwrap(), order.fee, order.payment,order.ych.unwrap(),order.slot.unwrap())
+        format!("{},{},{},{},{},{},{}", simple_date(), order.client, order.reference.unwrap(),
+                order.fee, order.payment, order.ych.unwrap(), order.slot.unwrap())
     };
 
     if let Err(err) = writeln!(csv, "{}", record) {
