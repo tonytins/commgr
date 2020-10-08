@@ -11,7 +11,7 @@ use uuid::Uuid;
 
 fn fancy_date() -> String {
     let dt_local = Local::now();
-    format!("{}/{}/{}", dt_local.year(), dt_local.day(), dt_local.day())
+    format!("{}/{}/{}", dt_local.month(), dt_local.day(), dt_local.year())
 }
 
 fn csv_manager<S: Into<String>>(file: S, order: &Order) -> File {
