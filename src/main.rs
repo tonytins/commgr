@@ -20,12 +20,12 @@ fn docs_dir<S: Into<String>>(file: S) -> String {
 
     if let Some(user_dirs) = UserDirs::new() {
         let docs_dir = user_dirs.document_dir()
-            .expect("There was a problem detecting documents path.");
+            .expect("There was an error detecting documents path.");
         let artm_path = format!("{}\\{}", docs_dir.display(), "artm");
 
         if !Path::new(&artm_path).exists() {
             fs::create_dir(&artm_path)
-                .expect("There was a problem creating time sheet directory.");
+                .expect("There was an error creating the directory.");
         }
 
         artm_file = format!("{}\\{}\\{}", docs_dir.display(), "artm", file_name);
@@ -39,7 +39,7 @@ fn csv_manager<S: Into<String>>(file: S, order: &Order) -> File {
     let file_name = &docs_dir(file.into());
 
     if !Path::new(file_name).exists() {
-        File::create(file_name).expect("Error creating file");
+        File::create(file_name).expect("There was an error creating the file");
     }
 
     // Append header to order file
@@ -50,7 +50,7 @@ fn csv_manager<S: Into<String>>(file: S, order: &Order) -> File {
         .expect("Error writing to file.");
 
     let contents = fs::read_to_string(file_name)
-        .expect("Error opening file");
+        .expect("There was an error opening the file");
 
     if contents.is_empty() {
         let header = if order.ych.is_none() {
