@@ -7,21 +7,42 @@ use clap::Clap;
 use std::{fs, fs::{OpenOptions, File}};
 use std::io::Write;
 use std::path::Path;
+use directories::UserDirs;
 
 fn simple_date() -> String {
     let dt_local = Local::now();
     format!("{}/{}/{}", dt_local.month(), dt_local.day(), dt_local.year())
 }
 
+fn docs_dir<S: Into<String>>(file: S) -> String {
+    let file_name = &file.into();
+    let mut artm_file = String::new();
+
+    if let Some(user_dirs) = UserDirs::new() {
+        let docs_dir = user_dirs.document_dir()
+            .expect("There was a problem detecting documents path.");
+        let artm_path = format!("{}\\{}", docs_dir.display(), "artm");
+
+        if !Path::new(&artm_path).exists() {
+            fs::create_dir(&artm_path)
+                .expect("There was a problem creating time sheet directory.");
+        }
+
+        artm_file = format!("{}\\{}\\{}", docs_dir.display(), "artm", file_name);
+    }
+
+    artm_file
+}
+
 fn csv_manager<S: Into<String>>(file: S, order: &Order) -> File {
     // Create a new time card, if it doesn't exist
-    let file_name = &file.into();
+    let file_name = &docs_dir(file.into());
 
     if !Path::new(file_name).exists() {
         File::create(file_name).expect("Error creating file");
     }
 
-    // Append status to time card file
+    // Append header to order file
     let mut manger = OpenOptions::new()
         .write(true)
         .append(true)
@@ -54,7 +75,7 @@ fn order_csv(order: Order) {
         format!("ych.csv")
     };
 
-    // Append status to time card file
+    // Append status to order file
     let mut csv = csv_manager(&file_name, &order);
     let record = if order.ych.is_none() || order.slot.is_none() {
 
