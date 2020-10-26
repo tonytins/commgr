@@ -39,10 +39,10 @@ fn order_csv(order: Order) {
 
     // Check if slots and ych options has something in it
     let record = if order.ych.is_some() && order.slot.is_some() && order.description.is_none() {
-        format!("{},{},{},\"{}\",{},{},{}", simple_date(), order.buyer, order.reference.unwrap(),
+        format!("{},\"{}\",{},\"{}\",\"{}\",\"{}\",{}", simple_date(), order.buyer, order.reference.unwrap(),
                 order_fee, order.payment, order.ych.unwrap(), order.slot.unwrap())
     } else if order.description.is_some() && order.ych.is_none() && order.slot.is_none() {
-        format!("{},{},\"{}\",{},\"{}\"", simple_date(), order.buyer, order_fee,
+        format!("{},\"{}\",\"{}\",\"{}\",\"{}\"", simple_date(), order.buyer, order_fee,
                 order.payment, order.description.unwrap())
     } else {
         panic!("Could not determine order.")

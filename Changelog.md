@@ -1,5 +1,9 @@
 # Change log
 
+## 0.5.2
+
+- Wrapped more values in quotations for better flexibility.
+
 ## 0.5.1
 
 - Fees are in quotations now because I forgot some currencies use commons instead of dots for their decimal points, e.g. [Swedish crown](https://en.wikipedia.org/wiki/Swedish_krona). See [usage](Usage.md) for examples.
