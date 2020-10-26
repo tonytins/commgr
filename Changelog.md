@@ -1,13 +1,18 @@
 # Change log
 
+## 0.5.1
+
+- Fees are in quotations now because I forgot some currencies use commons instead of dots for their decimal points, e.g. [Swedish crown](https://en.wikipedia.org/wiki/Swedish_krona). See [usage](Usage.md) for examples.
+- Renamed ``/artm`` directory to ``/CommissionRecords``
+
 ## 0.5.0
 
 - Removed passive tones from README
 
 ### Breaking changes
 
-- "Client" option has been changed to "Buyer" to make room for Currency option.
-- Renamed from Art Manager to Commission Records for Artists or "CRA" for short.
+- ``--client`` option has been changed to ``--buyer`` to make room for the ``--currency`` option.
+- Renamed from Art Manager to Commission Records for Artists, or "CRA" for short.
 
 ### Note
 
@@ -16,7 +21,8 @@ While an embedded database had been planned for CRA (and still on the drawing bo
 As this breaking change is more of a refinement and improvement built upon previous version's changes, 0.5 will likely be the last in 0.x series - finally.
 
 ## 0.4.0
-**BREAKING CHANGES**
+
+### Breaking changes
 
 Art Manager has been completely rewritten to use Clap's derive macros. This dramatically reduces the complexity with the lines of code have been reduced from 499 to 116.
 

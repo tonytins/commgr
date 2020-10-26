@@ -27,18 +27,18 @@ Example: ``cra order -b "Alberta Mann" -f 43 -p "5458-2118-9194-8514" -d "Lorem 
 
 ```csv
 Date,Client,Fee,Payment,Description
-10/26/2020,Alberta Mann,$43.00,5458-2118-9194-8514,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut pretium enim. Sed a neque."
+10/26/2020,Alberta Mann,"$43.00",5458-2118-9194-8514,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut pretium enim. Sed a neque."
 ```
 
 ## YCH
 
 ``cra order --b <buyer> -f <fee> -r <reference> -d <description> -p <payment> -y <ych> -s <slot>``
 
-Example: ``cra order -b "Bessie Hettinger" -s 4 -f 25 -p "31VLNZXfcpoA68wPRuWSdrmT3jv5k" -r "https://www.furaffinity.net/view/20700210/" -y Synthesize``
+Example: ``cra order -b "Bessie Hettinger" -s 4 -f 25 -p "31VLNZXfcpoA68wPRuWSdrmT3jv5k" -r "https://www.furaffinity.net/view/20700210/" -y Synthesize -c SEK``
 
 ```csv
 Date,Client,Reference,Fee,Payment,YCH,Slot
-10/26/2020,Bessie Hettinger,https://www.furaffinity.net/view/20700210/,$25.00,31VLNZXfcpoA68wPRuWSdrmT3jv5k,Synthesize,4
+10/26/2020,Bessie Hettinger,https://www.furaffinity.net/view/20700210/,"25,00kr",31VLNZXfcpoA68wPRuWSdrmT3jv5k,Synthesize,4
 ```
 
 ### Raffle

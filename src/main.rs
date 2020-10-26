@@ -32,17 +32,17 @@ fn order_csv(order: Order) {
     // Check if we should be using the buyer's or configuration's currency.
     // USD is used as the default currency, if no config.toml is found.
     let order_fee = if order.currency.is_some() {
-        money!(order.fee, &order.currency.unwrap())
+        money!(order.fee, &order.currency.unwrap().as_str())
     } else {
-        money!(order.fee, &cfg.currency)
+        money!(order.fee, &cfg.currency.as_str())
     };
 
     // Check if slots and ych options has something in it
     let record = if order.ych.is_some() && order.slot.is_some() && order.description.is_none() {
-        format!("{},{},{},{},{},{},{}", simple_date(), order.buyer, order.reference.unwrap(),
+        format!("{},{},{},\"{}\",{},{},{}", simple_date(), order.buyer, order.reference.unwrap(),
                 order_fee, order.payment, order.ych.unwrap(), order.slot.unwrap())
     } else if order.description.is_some() && order.ych.is_none() && order.slot.is_none() {
-        format!("{},{},{},{},\"{}\"", simple_date(), order.buyer, order_fee,
+        format!("{},{},\"{}\",{},\"{}\"", simple_date(), order.buyer, order_fee,
                 order.payment, order.description.unwrap())
     } else {
         panic!("Could not determine order.")
