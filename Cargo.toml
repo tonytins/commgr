@@ -1,6 +1,6 @@
 [package]
 name = "artm"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["Anthony Leland"]
 repository = "https://github.com/tonytins/artm"
 license = "GNU GPL v3"
@@ -15,6 +15,8 @@ chrono = "0.4"
 anyhow = "1.0"
 csv = "1.1"
 directories = "3.0"
+rusty-money = "0.3"
+toml = "0.5"
 
 [dependencies.clap]
 version = "3.0.0-beta.2"

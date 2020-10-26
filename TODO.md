@@ -1,7 +1,8 @@
 # To-do
 
-- [ ] Set different save location
+- [x] Different save location
 - [ ] YCH Raffle
+- [x] Write config file
 - [x] Write to file
 - [x] Basic Submission Info
     - [x] YCH
