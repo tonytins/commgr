@@ -26,7 +26,7 @@ fn order_csv(order: Order) {
     };
 
     // Append status to order file
-    let cfg_file = docs_dir("artm.toml", false);
+    let cfg_file = docs_dir("config.toml", false);
     let cfg = get_config(cfg_file);
     let mut csv = csv_manager(&file_name, &order);
     let record = if order.ych.is_none() || order.slot.is_none() {

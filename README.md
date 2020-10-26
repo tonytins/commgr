@@ -12,7 +12,7 @@ A command line interface for storing art request, commission, and YCH informatio
 
 ## Configuration
 
-Art Manager expects the ``config.toml`` in the ``/artm`` directory. If the file isn't found, it will use the default settings. For example:
+Art Manager expects the ``config.toml`` in the ``/artm`` directory of your operating system's respective document's folder. If the file isn't found, it will use the default settings.
 
 ```toml
 # The default is USD

@@ -7,29 +7,29 @@ use std::path::Path;
 use std::fs;
 
 #[derive(Deserialize, Serialize, Clone)]
-pub struct MangerConfig {
+pub struct ManagerConfig {
     pub currency: String
 }
 
-impl Default for MangerConfig {
+impl Default for ManagerConfig {
     fn default() -> Self {
-        MangerConfig {
+        ManagerConfig {
             currency: "USD".to_string()
         }
     }
 }
 
-pub fn get_config<S: Into<String>>(file: S) -> MangerConfig {
+pub fn get_config<S: Into<String>>(file: S) -> ManagerConfig {
     let file_name = &file.into();
     if Path::new(file_name).exists() {
         let contents = fs::read_to_string(file_name)
             .expect("Error reading file.");
 
-        let config: MangerConfig = toml::from_str(&contents)
+        let config: ManagerConfig = toml::from_str(&contents)
             .expect("There was a problem with your configuration.");
 
         config
     } else {
-        MangerConfig::default()
+        ManagerConfig::default()
     }
 }
