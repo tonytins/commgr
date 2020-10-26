@@ -1,13 +1,11 @@
 [package]
-name = "artm"
-version = "0.4.1"
-authors = ["Anthony Leland"]
+name = "cra"
+version = "0.5.0"
+authors = ["Anthony Foxclaw"]
 repository = "https://github.com/tonytins/artm"
 license = "GNU GPL v3"
 edition = "2018"
-description = """
-A commmission and YCH manager.
-"""
+readme = "README.md"
 
 [dependencies]
 self_update = "0.20"

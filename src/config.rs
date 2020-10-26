@@ -2,7 +2,6 @@
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
 use serde::{Serialize, Deserialize};
-use crate::utils::docs_dir;
 use std::path::Path;
 use std::fs;
 

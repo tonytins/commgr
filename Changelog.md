@@ -1,5 +1,20 @@
 # Change log
 
+## 0.5.0
+
+- Removed passive tones from README
+
+### Breaking changes
+
+- "Client" option has been changed to "Buyer" to make room for Currency option.
+- Renamed from Art Manager to Commission Records for Artists or "CRA" for short.
+
+### Note
+
+While an embedded database had been planned for CRA (and still on the drawing board), CSVs have been proven to be sufficient for data exchange and storage. It can be opened in any spreadsheet software that supports format for further editing in data exchange or imported into a database for storage. Much better than reinventing the wheel with JSON.
+
+As this breaking change is more of a refinement and improvement built upon previous version's changes, 0.5 will likely be the last in 0.x series - finally.
+
 ## 0.4.0
 **BREAKING CHANGES**
 

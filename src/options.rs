@@ -9,21 +9,22 @@ use serde::Deserialize;
 pub struct Opts {
     #[clap(short, long)]
     pub debug: Option<bool>,
-    #[clap(short, long)]
-    pub credits: Option<bool>,
     #[clap(subcommand)]
     pub order: Orders
 }
 
 #[derive(Clap, Debug, Clone)]
 pub enum Orders {
+    #[clap(author, about = "Allows for storing of commission and YCH information into CSV files.", version)]
     Order(Order)
 }
 
 #[derive(Clap, Debug, Deserialize, Clone)]
 pub struct Order {
     #[clap(short, long)]
-    pub client: String,
+    pub buyer: String,
+    #[clap(short, long)]
+    pub currency: Option<String>, // Buyer's currency
     #[clap(short, long)]
     pub fee: i32,
     #[clap(short, long)]
