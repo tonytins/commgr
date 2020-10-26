@@ -12,14 +12,9 @@ A command line interface for storing art request, commission, and YCH informatio
 
 ## Authors
 
-- **Anthony Wilcox** - _Initial work_ - [tonytins](https://github.com/tonytins)
+- **Anthony Leland** - _Initial work_ - [tonytins](https://github.com/tonytins)
 
-See also the list of [contributors](https://github.com/tonytins/citylimits/contributors) who participated in this project.
-
-### Tested Platforms
-
-- Ubuntu 16.04+
-- Windows 10 v1809+
+See also the list of [contributors](https://github.com/tonytins/artm/contributors) who participated in this project.
 
 ## License
 
