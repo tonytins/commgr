@@ -1,8 +1,8 @@
 [package]
 name = "cra"
-version = "0.5.2"
+version = "1.0.0-alpha.1"
 authors = ["Anthony Foxclaw"]
-repository = "https://github.com/tonytins/artm"
+repository = "https://github.com/tonytins/cra"
 license = "GNU GPL v3"
 edition = "2018"
 readme = "README.md"

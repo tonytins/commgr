@@ -1,5 +1,27 @@
 # Change log
 
+## 1.0-alpha.1
+
+### Personal Subcommand
+
+```text
+USAGE:
+    cra pers [OPTIONS] --name <name> --description <description>
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -d, --description <description>    
+    -n, --name <name>                  
+    -r, --reference <reference>
+```
+
+Personal, or ``pers``, is a simpler variant of the order subcommand. This subcommand is meant for record keeping of personal projects and lacks any economy features. This feature replaces Requests subcommand but can be used for the same purpose. It expects a name, description and an optional reference. The CSV header will include a column for references even when is none supplied.
+
+The code block that handled appending and reading files from ``csv_manager()`` was moved to its own function, called ``content_manager()``, in order to this subcommand possible. ``order_manager()`` as well as ``personal_manager()``, for this new subcommand, both use the new function.
+
 ## 0.5.2
 
 - Wrapped more values in quotations for better flexibility.

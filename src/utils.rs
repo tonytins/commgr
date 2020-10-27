@@ -4,6 +4,23 @@ use std::path::Path;
 use directories::UserDirs;
 use crate::options::Order;
 
+fn content_manager<S: Into<String>>(file: S) -> (File, String) {
+    // Create a new time card, if it doesn't exist
+    let file_name = &docs_dir(file.into(), true);
+
+    // Append header to order file
+    let manger = OpenOptions::new()
+        .write(true)
+        .append(true)
+        .open(file_name)
+        .expect("Error writing to file.");
+
+    let contents = fs::read_to_string(file_name)
+        .expect("There was an error opening the file");
+
+    (manger, contents)
+}
+
 pub fn docs_dir<S: Into<String>>(file: S, create_file: bool) -> String {
     let file_name = &file.into();
     let mut doc_file = String::new();
@@ -29,19 +46,29 @@ pub fn docs_dir<S: Into<String>>(file: S, create_file: bool) -> String {
     doc_file
 }
 
-pub fn csv_manager<S: Into<String>>(file: S, order: &Order) -> File {
+pub fn personal_manger<S: Into<String>>(file: S) -> File {
     // Create a new time card, if it doesn't exist
     let file_name = &docs_dir(file.into(), true);
 
-    // Append header to order file
-    let mut manger = OpenOptions::new()
-        .write(true)
-        .append(true)
-        .open(file_name)
-        .expect("Error writing to file.");
+    let (mut manger, contents) = content_manager(file_name);
 
-    let contents = fs::read_to_string(file_name)
-        .expect("There was an error opening the file");
+    if contents.is_empty() {
+        // Except a reference even if one is never provided
+        let header = format!("Date,Name,Description,Reference");
+
+        if let Err(err) = writeln!(manger, "{}", header) {
+            eprintln!("Couldn't write to file: {}", err);
+        }
+    }
+
+    manger
+}
+
+pub fn order_manager<S: Into<String>>(file: S, order: &Order) -> File {
+    // Create a new time card, if it doesn't exist
+    let file_name = &docs_dir(file.into(), true);
+
+    let (mut manger, contents) = content_manager(file_name);
 
     if contents.is_empty() {
         let header = if order.ych.is_none() {

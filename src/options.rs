@@ -10,13 +10,25 @@ pub struct Opts {
     #[clap(short, long)]
     pub debug: Option<bool>,
     #[clap(subcommand)]
-    pub order: Orders
+    pub subcmds: SubCommands,
 }
 
 #[derive(Clap, Debug, Clone)]
-pub enum Orders {
+pub enum SubCommands {
     #[clap(author, about = "Allows for storing of commission and YCH information into CSV files.", version)]
-    Order(Order)
+    Order(Order),
+    #[clap(author, about = "Simpler variant of the order command for personal projects.", version)]
+    Pers(Personal)
+}
+
+#[derive(Clap, Debug, Deserialize, Clone)]
+pub struct Personal {
+    #[clap(short, long)]
+    pub name: String,
+    #[clap(short, long)]
+    pub reference: Option<String>,
+    #[clap(short, long)]
+    pub description: String
 }
 
 #[derive(Clap, Debug, Deserialize, Clone)]
