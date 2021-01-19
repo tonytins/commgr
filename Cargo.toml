@@ -1,8 +1,8 @@
 [package]
-name = "cra"
+name = "cdb"
 version = "1.0.0-alpha.1"
-authors = ["Anthony Foxclaw"]
-repository = "https://github.com/tonytins/cra"
+authors = ["Tony Bark"]
+repository = "https://github.com/tonytins/cdb"
 license = "GNU GPL v3"
 edition = "2018"
 readme = "README.md"

@@ -1,8 +1,8 @@
-# Commission Records for Artists
+# Commission Database
 
 [Usage](Usage.md)
 
-Commission Records for Artists, or simply C.R.A., is a command line application keeping track of commission and YCH transactions. The information can later be imported into databases or modified externally from a spreadsheet program.
+Commission Database, aka `cdb`, is a command line application keeping track of commission and YCH transactions. The information can later be imported into databases or modified externally from a spreadsheet program.
 
 I welcome contribution to this project.
 
@@ -14,7 +14,7 @@ I welcome contribution to this project.
 
 ## Configuration
 
-CRA expects a ``config.toml`` in the ``/CommissionRecords`` directory of your operating system's respective document's folder. If the file isn't found, it will use the default settings.
+CRA expects a ``config.toml`` in the ``/CommissionsDatabase`` directory of your operating system's respective document's folder. If the file isn't found, it will use the default settings.
 
 ## Currency
 
