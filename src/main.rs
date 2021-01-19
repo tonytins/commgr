@@ -1,7 +1,7 @@
 // Copyright (c) Anthony Leland and contributors. All rights reserved.
 // Licensed under the GNU GPL v3 license. See LICENSE file in the project
 // root for full license information.
-use cra::{config::get_config,
+use cdb::{config::get_config,
           utils::{docs_dir, order_manager, personal_manger},
           options::{Opts, Order, Personal, SubCommands}};
 use chrono::{Local, Datelike};

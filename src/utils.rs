@@ -24,7 +24,7 @@ fn content_manager<S: Into<String>>(file: S) -> (File, String) {
 pub fn docs_dir<S: Into<String>>(file: S, create_file: bool) -> String {
     let file_name = &file.into();
     let mut doc_file = String::new();
-    let cra_dir = "CommissionRecords";
+    let cra_dir = "CommissionDatabase";
 
     if let Some(user_dirs) = UserDirs::new() {
         let docs_dir = user_dirs.document_dir()
