@@ -2,7 +2,7 @@
 
 ```txt
 USAGE:
-    cra order [OPTIONS] --buyer <buyer> --fee <fee> --payment <payment>
+    cdb order [OPTIONS] --buyer <buyer> --fee <fee> --payment <payment>
 
 FLAGS:
     -h, --help       Prints help information
@@ -21,9 +21,9 @@ OPTIONS:
 
 ### Commissions
 
-``cra order --b <buyer> -f <fee> -d <description> -p <payment>``
+``cdb order -b <buyer> -f <fee> -d <description> -p <payment>``
 
-Example: ``cra order -b "Alberta Mann" -f 43 -p "5458-2118-9194-8514" -d "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut pretium enim. Sed a neque."``
+Example: ``cdb order -b "Alberta Mann" -f 43 -p "5458-2118-9194-8514" -d "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut pretium enim. Sed a neque."``
 
 ```csv
 Date,Client,Fee,Payment,Description
@@ -32,9 +32,9 @@ Date,Client,Fee,Payment,Description
 
 ## YCH
 
-``cra order --b <buyer> -f <fee> -r <reference> -d <description> -p <payment> -y <ych> -s <slot>``
+``cdb order --b <buyer> -f <fee> -r <reference> -d <description> -p <payment> -y <ych> -s <slot>``
 
-Example: ``cra order -b "Bessie Hettinger" -s 4 -f 25 -p "31VLNZXfcpoA68wPRuWSdrmT3jv5k" -r "https://www.furaffinity.net/view/20700210/" -y Synthesize -c SEK``
+Example: ``cdb order -b "Bessie Hettinger" -s 4 -f 25 -p "31VLNZXfcpoA68wPRuWSdrmT3jv5k" -r "https://www.furaffinity.net/view/20700210/" -y Synthesize -c SEK``
 
 ```csv
 Date,Client,Reference,Fee,Payment,YCH,Slot

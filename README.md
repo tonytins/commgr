@@ -14,7 +14,7 @@ I welcome contribution to this project.
 
 ## Configuration
 
-CRA expects a ``config.toml`` in the ``/CommissionsDatabase`` directory of your operating system's respective document's folder. If the file isn't found, it will use the default settings.
+CRA expects a ``config.toml`` in the ``/cdb`` directory of your operating system's respective document's folder. If the file isn't found, it will use the default settings.
 
 ## Currency
 

@@ -1,6 +1,6 @@
 [package]
 name = "cdb"
-version = "1.0.0-alpha.1"
+version = "0.6.1"
 authors = ["Tony Bark"]
 repository = "https://github.com/tonytins/cdb"
 license = "GNU GPL v3"

@@ -1,6 +1,12 @@
 # Change log
 
-## 1.0-alpha.1
+## 0.6.1
+
+This is an architecture rewrite that removes the manually written file I/O functions in favor of using the CSV crate.
+
+## 0.6.0
+
+*This was originally 1.0.0-alpha.1 but was retroactively made 0.6.0 as part of the architecture rewrite.*
 
 ### Personal Subcommand
 

@@ -24,19 +24,19 @@ fn content_manager<S: Into<String>>(file: S) -> (File, String) {
 pub fn docs_dir<S: Into<String>>(file: S, create_file: bool) -> String {
     let file_name = &file.into();
     let mut doc_file = String::new();
-    let cra_dir = "CommissionDatabase";
+    let cdb_dir = "cdb";
 
     if let Some(user_dirs) = UserDirs::new() {
         let docs_dir = user_dirs.document_dir()
             .expect("There was an error detecting documents path.");
-        let artm_path = format!("{}\\{}", docs_dir.display(), cra_dir);
+        let artm_path = format!("{}\\{}", docs_dir.display(), cdb_dir);
 
         if !Path::new(&artm_path).exists() {
             fs::create_dir(&artm_path)
                 .expect("There was an error creating the directory.");
         }
 
-        doc_file = format!("{}\\{}\\{}", docs_dir.display(), cra_dir, file_name);
+        doc_file = format!("{}\\{}\\{}", docs_dir.display(), cdb_dir, file_name);
 
         if !Path::new(&doc_file).exists() && create_file == true {
             File::create(&doc_file).expect("There was an error creating the file");
