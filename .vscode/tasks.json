@@ -28,7 +28,7 @@
         "dev"
       ],
       "group": "build",
-      "label": "tauri build build"
+      "label": "cargo tauri dev"
     }
   ]
 }
