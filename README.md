@@ -11,14 +11,15 @@ I welcome contribution to this project.
 ### Prerequisites
 
 - Rust 2018 edition
+- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 
 ## Configuration
 
-CRA expects a ``config.toml`` in the ``/cdb`` directory of your operating system's respective document's folder. If the file isn't found, it will use the default settings.
+CRA expects a `config.toml` in the `/cdb` directory of your operating system's respective document's folder. If the file isn't found, it will use the default settings.
 
 ## Currency
 
-The default currency is USD. This can be overwritten in the ``config.toml`` or ``--currency`` option. You must provide a [ISO-4127 code](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) in either case. The latter is for per-buyer bases whereas the former is for your region's currency.
+The default currency is USD. This can be overwritten in the `config.toml` or `--currency` option. You must provide a [ISO-4127 code](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) in either case. The latter is for per-buyer bases whereas the former is for your region's currency.
 
 ```toml
 currency = "EUR"
