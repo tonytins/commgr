@@ -1,25 +1,10 @@
-// Copyright (c) Tony Bark and contributors. All rights reserved.
-// Licensed under the GNU GPL v3 license. See LICENSE file in the project
-// root for full license information.
-use cdb::{
+use crate::{
     config::get_config,
-    options::{Opts, Order, Personal, SubCommands},
-    utils::{docs_dir, order_manager, personal_manger},
+    options::{Order, Personal},
+    utils::{docs_dir, order_manager, personal_manger, simple_date},
 };
-use chrono::{Datelike, Local};
-use clap::Clap;
 use rusty_money::{money, Money};
 use std::io::Write;
-
-fn simple_date() -> String {
-    let dt_local = Local::now();
-    format!(
-        "{}/{}/{}",
-        dt_local.month(),
-        dt_local.day(),
-        dt_local.year()
-    )
-}
 
 fn order_csv(order: Order) {
     let file_name = if order.ych.is_some() {
@@ -98,18 +83,5 @@ fn personal_csv(pers: Personal) {
     // Finally, append contents to file
     if let Err(err) = writeln!(csv, "{}", record) {
         eprintln!("Couldn't write to file: {}", err);
-    }
-}
-
-fn main() {
-    let matches: Opts = Opts::parse();
-
-    match matches.subcmds {
-        SubCommands::Order(order) => {
-            order_csv(order);
-        }
-        SubCommands::Pers(personal) => {
-            personal_csv(personal);
-        }
     }
 }

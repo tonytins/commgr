@@ -1,6 +1,3 @@
-// Copyright (c) Anthony Leland and contributors. All rights reserved.
-// Licensed under the GNU GPL v3 license. See LICENSE file in the project
-// root for full license information.
 use clap::Clap;
 use serde::Deserialize;
 
@@ -15,10 +12,18 @@ pub struct Opts {
 
 #[derive(Clap, Debug, Clone)]
 pub enum SubCommands {
-    #[clap(author, about = "Allows for storing of commission and YCH information into CSV files.", version)]
+    #[clap(
+        author,
+        about = "Allows for storing of commission and YCH information into CSV files.",
+        version
+    )]
     Order(Order),
-    #[clap(author, about = "Simpler variant of the order command for personal projects.", version)]
-    Pers(Personal)
+    #[clap(
+        author,
+        about = "Simpler variant of the order command for personal projects.",
+        version
+    )]
+    Pers(Personal),
 }
 
 #[derive(Clap, Debug, Deserialize, Clone)]
@@ -28,7 +33,7 @@ pub struct Personal {
     #[clap(short, long)]
     pub reference: Option<String>,
     #[clap(short, long)]
-    pub description: String
+    pub description: String,
 }
 
 #[derive(Clap, Debug, Deserialize, Clone)]

@@ -1,8 +1,25 @@
-use std::{fs, fs::{OpenOptions, File}};
+// Copyright (c) Tony Bark and contributors. All rights reserved.
+// Licensed under the GNU GPL v3 license. See LICENSE file in the project
+// root for full license information.
+use crate::options::Order;
+use chrono::{Datelike, Local};
+use directories::UserDirs;
 use std::io::Write;
 use std::path::Path;
-use directories::UserDirs;
-use crate::options::Order;
+use std::{
+    fs,
+    fs::{File, OpenOptions},
+};
+
+pub fn simple_date() -> String {
+    let dt_local = Local::now();
+    format!(
+        "{}/{}/{}",
+        dt_local.month(),
+        dt_local.day(),
+        dt_local.year()
+    )
+}
 
 fn content_manager<S: Into<String>>(file: S) -> (File, String) {
     // Create a new time card, if it doesn't exist
@@ -15,8 +32,7 @@ fn content_manager<S: Into<String>>(file: S) -> (File, String) {
         .open(file_name)
         .expect("Error writing to file.");
 
-    let contents = fs::read_to_string(file_name)
-        .expect("There was an error opening the file");
+    let contents = fs::read_to_string(file_name).expect("There was an error opening the file");
 
     (manger, contents)
 }
@@ -27,13 +43,13 @@ pub fn docs_dir<S: Into<String>>(file: S, create_file: bool) -> String {
     let cdb_dir = "cdb";
 
     if let Some(user_dirs) = UserDirs::new() {
-        let docs_dir = user_dirs.document_dir()
+        let docs_dir = user_dirs
+            .document_dir()
             .expect("There was an error detecting documents path.");
         let artm_path = format!("{}\\{}", docs_dir.display(), cdb_dir);
 
         if !Path::new(&artm_path).exists() {
-            fs::create_dir(&artm_path)
-                .expect("There was an error creating the directory.");
+            fs::create_dir(&artm_path).expect("There was an error creating the directory.");
         }
 
         doc_file = format!("{}\\{}\\{}", docs_dir.display(), cdb_dir, file_name);
